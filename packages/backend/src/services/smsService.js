@@ -2,10 +2,10 @@ import twilio from 'twilio';
 import { OTP } from '../models/index.js';
 import crypto from 'crypto';
 
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+// Initialize Twilio client only if credentials are provided
+const client = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && 
+  process.env.TWILIO_ACCOUNT_SID.startsWith('AC') ? 
+  twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN) : null;
 
 export class SMSService {
   static async sendOTP(phone, type = 'phone_verification') {
@@ -21,6 +21,17 @@ export class SMSService {
         ip_address: null, // Will be set by controller
         user_agent: null  // Will be set by controller
       });
+
+      // Check if Twilio is configured
+      if (!client) {
+        console.log(`📱 [DEV MODE] OTP for ${phone}: ${code}`);
+        return {
+          success: true,
+          messageId: 'dev-mode',
+          expiresIn: 600, // 10 minutes in seconds
+          devMode: true
+        };
+      }
 
       // Send SMS via Twilio
       const message = await client.messages.create({

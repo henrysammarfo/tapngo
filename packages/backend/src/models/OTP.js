@@ -66,7 +66,9 @@ const OTP = sequelize.define('OTP', {
 // Clean up expired OTPs
 OTP.addHook('beforeCreate', (otp) => {
   // Set expiration to 10 minutes from now
-  otp.expires_at = new Date(Date.now() + 10 * 60 * 1000);
+  if (!otp.expires_at) {
+    otp.expires_at = new Date(Date.now() + 10 * 60 * 1000);
+  }
 });
 
 export default OTP;

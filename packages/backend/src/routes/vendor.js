@@ -156,9 +156,10 @@ router.get('/', async (req, res) => {
     const whereClause = { status };
     if (category) whereClause.business_category = category;
     if (search) {
-      whereClause[require('sequelize').Op.or] = [
-        { business_name: { [require('sequelize').Op.iLike]: `%${search}%` } },
-        { business_description: { [require('sequelize').Op.iLike]: `%${search}%` } }
+      const { Op } = await import('sequelize');
+      whereClause[Op.or] = [
+        { business_name: { [Op.iLike]: `%${search}%` } },
+        { business_description: { [Op.iLike]: `%${search}%` } }
       ];
     }
 
@@ -238,13 +239,14 @@ router.get('/stats', authenticateToken, requireVendor, async (req, res) => {
   try {
     const { Transaction } = await import('../models/index.js');
     
+    const { fn, col } = await import('sequelize');
     const stats = await Transaction.findAll({
       where: { vendor_id: req.vendor.id },
       attributes: [
-        [require('sequelize').fn('COUNT', require('sequelize').col('id')), 'total_transactions'],
-        [require('sequelize').fn('SUM', require('sequelize').col('vendor_amount')), 'total_earnings'],
-        [require('sequelize').fn('AVG', require('sequelize').col('vendor_amount')), 'average_transaction'],
-        [require('sequelize').fn('MAX', require('sequelize').col('created_at')), 'last_transaction']
+        [fn('COUNT', col('id')), 'total_transactions'],
+        [fn('SUM', col('vendor_amount')), 'total_earnings'],
+        [fn('AVG', col('vendor_amount')), 'average_transaction'],
+        [fn('MAX', col('created_at')), 'last_transaction']
       ],
       raw: true
     });

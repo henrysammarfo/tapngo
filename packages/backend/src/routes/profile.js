@@ -59,12 +59,13 @@ router.get('/:userId?', optionalAuth, async (req, res) => {
     }
 
     // Get transaction statistics
+    const { fn, col } = await import('sequelize');
     const transactionStats = await Transaction.findAll({
       where: { buyer_id: userId },
       attributes: [
-        [require('sequelize').fn('COUNT', require('sequelize').col('id')), 'total_transactions'],
-        [require('sequelize').fn('SUM', require('sequelize').col('amount_usdc')), 'total_spent'],
-        [require('sequelize').fn('AVG', require('sequelize').col('amount_usdc')), 'average_transaction']
+        [fn('COUNT', col('id')), 'total_transactions'],
+        [fn('SUM', col('amount_usdc')), 'total_spent'],
+        [fn('AVG', col('amount_usdc')), 'average_transaction']
       ],
       raw: true
     });

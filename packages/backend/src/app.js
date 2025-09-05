@@ -70,18 +70,25 @@ app.use(errorHandler);
 const startServer = async () => {
   try {
     // Test database connection
-    await sequelize.authenticate();
-    console.log('✅ Database connection established successfully.');
+    try {
+      await sequelize.authenticate();
+      console.log('✅ Database connection established successfully.');
 
-    // Sync database models
-    await syncDatabase();
-    console.log('✅ Database models synchronized.');
+      // Sync database models
+      await syncDatabase();
+      console.log('✅ Database models synchronized.');
+    } catch (dbError) {
+      console.warn('⚠️ Database connection failed:', dbError.message);
+      console.log('🔄 Starting server without database (development mode)');
+    }
 
     // Start server
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
       console.log(`📊 Health check: http://localhost:${PORT}/health`);
       console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`📱 SMS: ${process.env.TWILIO_ACCOUNT_SID ? 'Configured' : 'Development mode'}`);
+      console.log(`🗄️ Database: ${process.env.DB_HOST ? 'Configured' : 'Development mode'}`);
     });
   } catch (error) {
     console.error('❌ Unable to start server:', error);

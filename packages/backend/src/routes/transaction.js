@@ -331,13 +331,14 @@ router.get('/stats/overview', authenticateToken, async (req, res) => {
     const userId = req.user.id;
 
     // Get user's transaction stats
+    const { fn, col } = await import('sequelize');
     const userStats = await Transaction.findAll({
       where: { buyer_id: userId },
       attributes: [
-        [require('sequelize').fn('COUNT', require('sequelize').col('id')), 'total_transactions'],
-        [require('sequelize').fn('SUM', require('sequelize').col('amount_usdc')), 'total_spent'],
-        [require('sequelize').fn('AVG', require('sequelize').col('amount_usdc')), 'average_transaction'],
-        [require('sequelize').fn('MAX', require('sequelize').col('created_at')), 'last_transaction']
+        [fn('COUNT', col('id')), 'total_transactions'],
+        [fn('SUM', col('amount_usdc')), 'total_spent'],
+        [fn('AVG', col('amount_usdc')), 'average_transaction'],
+        [fn('MAX', col('created_at')), 'last_transaction']
       ],
       raw: true
     });
@@ -349,9 +350,9 @@ router.get('/stats/overview', authenticateToken, async (req, res) => {
       vendorStats = await Transaction.findAll({
         where: { vendor_id: vendor.id },
         attributes: [
-          [require('sequelize').fn('COUNT', require('sequelize').col('id')), 'total_sales'],
-          [require('sequelize').fn('SUM', require('sequelize').col('vendor_amount')), 'total_earnings'],
-          [require('sequelize').fn('AVG', require('sequelize').col('vendor_amount')), 'average_sale']
+          [fn('COUNT', col('id')), 'total_sales'],
+          [fn('SUM', col('vendor_amount')), 'total_earnings'],
+          [fn('AVG', col('vendor_amount')), 'average_sale']
         ],
         raw: true
       });

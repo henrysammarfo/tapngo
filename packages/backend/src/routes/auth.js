@@ -25,9 +25,10 @@ router.post('/signup', validate(schemas.userSignup), async (req, res) => {
     const { wallet_address, email, phone, password, social_provider, social_id, first_name, last_name, profile_picture } = req.body;
 
     // Check if user already exists
+    const { Op } = await import('sequelize');
     const existingUser = await User.findOne({
       where: {
-        [require('sequelize').Op.or]: [
+        [Op.or]: [
           wallet_address && { wallet_address },
           email && { email },
           phone && { phone }
@@ -82,9 +83,10 @@ router.post('/login', validate(schemas.userLogin), async (req, res) => {
     const { identifier, password } = req.body;
 
     // Find user by identifier
+    const { Op } = await import('sequelize');
     const user = await User.findOne({
       where: {
-        [require('sequelize').Op.or]: [
+        [Op.or]: [
           { email: identifier },
           { phone: identifier },
           { wallet_address: identifier }
@@ -223,7 +225,7 @@ router.get('/me', authenticateToken, async (req, res) => {
     const user = await User.findByPk(req.user.id, {
       include: [
         {
-          model: require('../models/index.js').Vendor,
+          model: (await import('../models/index.js')).Vendor,
           as: 'vendorProfile'
         }
       ]
