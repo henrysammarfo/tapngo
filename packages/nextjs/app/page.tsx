@@ -11,7 +11,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className="flex items-center flex-col grow pt-10">
+      {/*       <div className="flex items-center flex-col grow pt-10">
         <div className="px-5">
           <h1 className="text-center">
             <span className="block text-2xl mb-2">Welcome to</span>
@@ -64,7 +64,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
