@@ -1,0 +1,1233 @@
+{
+  "address": "0xA9F04F020CF9F511982719196E25FE7c666c9E4D",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "EnforcedPause",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ExpectedPause",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "vendor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "verified",
+          "type": "bool"
+        }
+      ],
+      "name": "EFPVerified",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "vendor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "score",
+          "type": "uint256"
+        }
+      ],
+      "name": "EFPasScoreUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "Paused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "vendor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "phoneHash",
+          "type": "string"
+        }
+      ],
+      "name": "PhoneVerified",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "Unpaused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "vendor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "ensName",
+          "type": "string"
+        }
+      ],
+      "name": "VendorApproved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "vendor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "ensName",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "businessName",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "phoneHash",
+          "type": "string"
+        }
+      ],
+      "name": "VendorRegistered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "vendor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "reason",
+          "type": "string"
+        }
+      ],
+      "name": "VendorRejected",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "vendor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "reason",
+          "type": "string"
+        }
+      ],
+      "name": "VendorSuspended",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "vendor",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "field",
+          "type": "string"
+        }
+      ],
+      "name": "VendorUpdated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        }
+      ],
+      "name": "approveVendor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "name": "ensToVendor",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "offset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "limit",
+          "type": "uint256"
+        }
+      ],
+      "name": "getVendorAddresses",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "addresses",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "ensName",
+          "type": "string"
+        }
+      ],
+      "name": "getVendorByENS",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getVendorCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "count",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getVendorProfile",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "wallet",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "ensName",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "businessName",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "phoneHash",
+              "type": "string"
+            },
+            {
+              "internalType": "bool",
+              "name": "phoneVerified",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "efpVerified",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "efpasScore",
+              "type": "uint256"
+            },
+            {
+              "internalType": "enum VendorRegistry.VendorStatus",
+              "name": "status",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "registrationTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lastUpdated",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct VendorRegistry.VendorProfile",
+          "name": "profile",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        }
+      ],
+      "name": "isActiveVendor",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isActive",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        }
+      ],
+      "name": "isVendor",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isRegistered",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "minEFPasScore",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "paused",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "ensName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "businessName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "phoneHash",
+          "type": "string"
+        }
+      ],
+      "name": "registerVendor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "reason",
+          "type": "string"
+        }
+      ],
+      "name": "rejectVendor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "requireEFPVerification",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "requirePhoneVerification",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "reason",
+          "type": "string"
+        }
+      ],
+      "name": "suspendVendor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "unpause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "newBusinessName",
+          "type": "string"
+        }
+      ],
+      "name": "updateBusinessName",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "verified",
+          "type": "bool"
+        }
+      ],
+      "name": "updateEFPVerification",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "score",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateEFPasScore",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vendorAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "verified",
+          "type": "bool"
+        }
+      ],
+      "name": "updatePhoneVerification",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "phoneRequired",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "efpRequired",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "minScore",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateVerificationRequirements",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "name": "usedPhoneHashes",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "vendorAddresses",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "vendors",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "wallet",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "ensName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "businessName",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "phoneHash",
+          "type": "string"
+        },
+        {
+          "internalType": "bool",
+          "name": "phoneVerified",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "efpVerified",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "efpasScore",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum VendorRegistry.VendorStatus",
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "registrationTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lastUpdated",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x963d484cfafb3dd22a7c9f1277a05bc18b6c58ddd8ae76775792c7c6422bb46b",
+  "receipt": {
+    "to": null,
+    "from": "0xBab2d51d46042098690a9767339d7603C9F737C1",
+    "contractAddress": "0xA9F04F020CF9F511982719196E25FE7c666c9E4D",
+    "transactionIndex": 3,
+    "gasUsed": "2099719",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000800000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000080000000000020000000000000000000800000000000000000000000000000000400000000000000008000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000040000020000000000000000000000000000",
+    "blockHash": "0xec9870be1e3e8ebac8172e3456c633928b90009382c3802e9cb874bfa87d1bf8",
+    "transactionHash": "0x963d484cfafb3dd22a7c9f1277a05bc18b6c58ddd8ae76775792c7c6422bb46b",
+    "logs": [
+      {
+        "transactionIndex": 3,
+        "blockNumber": 30637630,
+        "transactionHash": "0x963d484cfafb3dd22a7c9f1277a05bc18b6c58ddd8ae76775792c7c6422bb46b",
+        "address": "0xA9F04F020CF9F511982719196E25FE7c666c9E4D",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000bab2d51d46042098690a9767339d7603c9f737c1"
+        ],
+        "data": "0x",
+        "logIndex": 10,
+        "blockHash": "0xec9870be1e3e8ebac8172e3456c633928b90009382c3802e9cb874bfa87d1bf8"
+      }
+    ],
+    "blockNumber": 30637630,
+    "cumulativeGasUsed": "2651011",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "1e7f658a624141603997a4c1dbf9231d",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"EnforcedPause\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ExpectedPause\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"vendor\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"verified\",\"type\":\"bool\"}],\"name\":\"EFPVerified\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"vendor\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"score\",\"type\":\"uint256\"}],\"name\":\"EFPasScoreUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Paused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"vendor\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"phoneHash\",\"type\":\"string\"}],\"name\":\"PhoneVerified\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Unpaused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"vendor\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"ensName\",\"type\":\"string\"}],\"name\":\"VendorApproved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"vendor\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"ensName\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"businessName\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"phoneHash\",\"type\":\"string\"}],\"name\":\"VendorRegistered\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"vendor\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"name\":\"VendorRejected\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"vendor\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"name\":\"VendorSuspended\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"vendor\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"field\",\"type\":\"string\"}],\"name\":\"VendorUpdated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"}],\"name\":\"approveVendor\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"name\":\"ensToVendor\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"offset\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"limit\",\"type\":\"uint256\"}],\"name\":\"getVendorAddresses\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"addresses\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"ensName\",\"type\":\"string\"}],\"name\":\"getVendorByENS\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getVendorCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"count\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"}],\"name\":\"getVendorProfile\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"wallet\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"ensName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"businessName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"phoneHash\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"phoneVerified\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"efpVerified\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"efpasScore\",\"type\":\"uint256\"},{\"internalType\":\"enum VendorRegistry.VendorStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"registrationTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lastUpdated\",\"type\":\"uint256\"}],\"internalType\":\"struct VendorRegistry.VendorProfile\",\"name\":\"profile\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"}],\"name\":\"isActiveVendor\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isActive\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"}],\"name\":\"isVendor\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isRegistered\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"minEFPasScore\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"ensName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"businessName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"phoneHash\",\"type\":\"string\"}],\"name\":\"registerVendor\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"name\":\"rejectVendor\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"requireEFPVerification\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"requirePhoneVerification\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"name\":\"suspendVendor\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"unpause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"newBusinessName\",\"type\":\"string\"}],\"name\":\"updateBusinessName\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"verified\",\"type\":\"bool\"}],\"name\":\"updateEFPVerification\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"score\",\"type\":\"uint256\"}],\"name\":\"updateEFPasScore\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vendorAddress\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"verified\",\"type\":\"bool\"}],\"name\":\"updatePhoneVerification\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"phoneRequired\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"efpRequired\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"minScore\",\"type\":\"uint256\"}],\"name\":\"updateVerificationRequirements\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"name\":\"usedPhoneHashes\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"vendorAddresses\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"vendors\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"wallet\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"ensName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"businessName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"phoneHash\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"phoneVerified\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"efpVerified\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"efpasScore\",\"type\":\"uint256\"},{\"internalType\":\"enum VendorRegistry.VendorStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"registrationTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lastUpdated\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Registry for managing vendor profiles and verification status Stores vendor information including ENS names, phone verification, EFP verification, and EFPas scores\",\"errors\":{\"EnforcedPause()\":[{\"details\":\"The operation failed because the contract is paused.\"}],\"ExpectedPause()\":[{\"details\":\"The operation failed because the contract is not paused.\"}],\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}]},\"events\":{\"Paused(address)\":{\"details\":\"Emitted when the pause is triggered by `account`.\"},\"Unpaused(address)\":{\"details\":\"Emitted when the pause is lifted by `account`.\"}},\"kind\":\"dev\",\"methods\":{\"approveVendor(address)\":{\"details\":\"Approve a vendor (admin only)\",\"params\":{\"vendorAddress\":\"Address of the vendor to approve\"}},\"getVendorAddresses(uint256,uint256)\":{\"details\":\"Get all vendor addresses (for pagination)\",\"params\":{\"limit\":\"Maximum number of addresses to return\",\"offset\":\"Starting index\"},\"returns\":{\"addresses\":\"Array of vendor addresses\"}},\"getVendorByENS(string)\":{\"details\":\"Get vendor address by ENS name\",\"params\":{\"ensName\":\"ENS name to look up\"},\"returns\":{\"vendorAddress\":\"Address of the vendor\"}},\"getVendorCount()\":{\"details\":\"Get total number of registered vendors\",\"returns\":{\"count\":\"Total number of vendors\"}},\"getVendorProfile(address)\":{\"details\":\"Get vendor profile by address\",\"params\":{\"vendorAddress\":\"Address of the vendor\"},\"returns\":{\"profile\":\"Vendor profile struct\"}},\"isActiveVendor(address)\":{\"details\":\"Check if a vendor is active\",\"params\":{\"vendorAddress\":\"Address to check\"},\"returns\":{\"isActive\":\"True if vendor is active\"}},\"isVendor(address)\":{\"details\":\"Check if an address is a registered vendor\",\"params\":{\"vendorAddress\":\"Address to check\"},\"returns\":{\"isRegistered\":\"True if address is a registered vendor\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"pause()\":{\"details\":\"Pause the contract (admin only)\"},\"paused()\":{\"details\":\"Returns true if the contract is paused, and false otherwise.\"},\"registerVendor(string,string,string)\":{\"details\":\"Register a new vendor\",\"params\":{\"businessName\":\"Display name of the business\",\"ensName\":\"ENS subname for the vendor (e.g., \\\"business.tapngo.eth\\\")\",\"phoneHash\":\"Hashed phone number\"}},\"rejectVendor(address,string)\":{\"details\":\"Reject a vendor registration (admin only)\",\"params\":{\"reason\":\"Reason for rejection\",\"vendorAddress\":\"Address of the vendor to reject\"}},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"suspendVendor(address,string)\":{\"details\":\"Suspend a vendor (admin only)\",\"params\":{\"reason\":\"Reason for suspension\",\"vendorAddress\":\"Address of the vendor to suspend\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"},\"unpause()\":{\"details\":\"Unpause the contract (admin only)\"},\"updateBusinessName(string)\":{\"details\":\"Update business name (vendor only)\",\"params\":{\"newBusinessName\":\"New business name\"}},\"updateEFPVerification(address,bool)\":{\"details\":\"Update vendor's EFP verification status (admin only)\",\"params\":{\"vendorAddress\":\"Address of the vendor\",\"verified\":\"Verification status\"}},\"updateEFPasScore(address,uint256)\":{\"details\":\"Update vendor's EFPas score (admin only)\",\"params\":{\"score\":\"EFPas reputation score\",\"vendorAddress\":\"Address of the vendor\"}},\"updatePhoneVerification(address,bool)\":{\"details\":\"Update vendor's phone verification status (admin only)\",\"params\":{\"vendorAddress\":\"Address of the vendor\",\"verified\":\"Verification status\"}},\"updateVerificationRequirements(bool,bool,uint256)\":{\"details\":\"Update verification requirements (admin only)\",\"params\":{\"efpRequired\":\"Whether EFP verification is required\",\"minScore\":\"Minimum EFPas score required\",\"phoneRequired\":\"Whether phone verification is required\"}}},\"title\":\"VendorRegistry\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/VendorRegistry.sol\":\"VendorRegistry\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Pausable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.3.0) (utils/Pausable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which allows children to implement an emergency stop\\n * mechanism that can be triggered by an authorized account.\\n *\\n * This module is used through inheritance. It will make available the\\n * modifiers `whenNotPaused` and `whenPaused`, which can be applied to\\n * the functions of your contract. Note that they will not be pausable by\\n * simply including this module, only once the modifiers are put in place.\\n */\\nabstract contract Pausable is Context {\\n    bool private _paused;\\n\\n    /**\\n     * @dev Emitted when the pause is triggered by `account`.\\n     */\\n    event Paused(address account);\\n\\n    /**\\n     * @dev Emitted when the pause is lifted by `account`.\\n     */\\n    event Unpaused(address account);\\n\\n    /**\\n     * @dev The operation failed because the contract is paused.\\n     */\\n    error EnforcedPause();\\n\\n    /**\\n     * @dev The operation failed because the contract is not paused.\\n     */\\n    error ExpectedPause();\\n\\n    /**\\n     * @dev Modifier to make a function callable only when the contract is not paused.\\n     *\\n     * Requirements:\\n     *\\n     * - The contract must not be paused.\\n     */\\n    modifier whenNotPaused() {\\n        _requireNotPaused();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Modifier to make a function callable only when the contract is paused.\\n     *\\n     * Requirements:\\n     *\\n     * - The contract must be paused.\\n     */\\n    modifier whenPaused() {\\n        _requirePaused();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns true if the contract is paused, and false otherwise.\\n     */\\n    function paused() public view virtual returns (bool) {\\n        return _paused;\\n    }\\n\\n    /**\\n     * @dev Throws if the contract is paused.\\n     */\\n    function _requireNotPaused() internal view virtual {\\n        if (paused()) {\\n            revert EnforcedPause();\\n        }\\n    }\\n\\n    /**\\n     * @dev Throws if the contract is not paused.\\n     */\\n    function _requirePaused() internal view virtual {\\n        if (!paused()) {\\n            revert ExpectedPause();\\n        }\\n    }\\n\\n    /**\\n     * @dev Triggers stopped state.\\n     *\\n     * Requirements:\\n     *\\n     * - The contract must not be paused.\\n     */\\n    function _pause() internal virtual whenNotPaused {\\n        _paused = true;\\n        emit Paused(_msgSender());\\n    }\\n\\n    /**\\n     * @dev Returns to normal state.\\n     *\\n     * Requirements:\\n     *\\n     * - The contract must be paused.\\n     */\\n    function _unpause() internal virtual whenPaused {\\n        _paused = false;\\n        emit Unpaused(_msgSender());\\n    }\\n}\\n\",\"keccak256\":\"0xdb484371dfbb848cb6f5d70464e9ac9b2900e4164ead76bbce4fef0b44bcc68f\",\"license\":\"MIT\"},\"contracts/VendorRegistry.sol\":{\"content\":\"//SPDX-License-Identifier: MIT\\r\\npragma solidity ^0.8.20;\\r\\n\\r\\nimport \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\r\\nimport \\\"@openzeppelin/contracts/utils/Pausable.sol\\\";\\r\\n\\r\\n/**\\r\\n * @title VendorRegistry\\r\\n * @dev Registry for managing vendor profiles and verification status\\r\\n * Stores vendor information including ENS names, phone verification, EFP verification, and EFPas scores\\r\\n */\\r\\ncontract VendorRegistry is Ownable, Pausable {\\r\\n    // Vendor status enum\\r\\n    enum VendorStatus {\\r\\n        Pending,    // 0 - Vendor registered but not approved\\r\\n        Active,     // 1 - Vendor approved and active\\r\\n        Suspended,  // 2 - Vendor suspended by admin\\r\\n        Rejected    // 3 - Vendor registration rejected\\r\\n    }\\r\\n    \\r\\n    // Vendor profile structure\\r\\n    struct VendorProfile {\\r\\n        address wallet;           // Vendor's wallet address\\r\\n        string ensName;          // ENS subname (e.g., \\\"business.tapngo.eth\\\")\\r\\n        string businessName;     // Business display name\\r\\n        string phoneHash;        // Hashed phone number for verification\\r\\n        bool phoneVerified;      // Phone verification status\\r\\n        bool efpVerified;        // Ethereum Follow Protocol verification\\r\\n        uint256 efpasScore;      // EFPas reputation score (0 if not available)\\r\\n        VendorStatus status;     // Current vendor status\\r\\n        uint256 registrationTime; // Timestamp of registration\\r\\n        uint256 lastUpdated;     // Timestamp of last profile update\\r\\n    }\\r\\n    \\r\\n    // State variables\\r\\n    mapping(address => VendorProfile) public vendors;\\r\\n    mapping(string => address) public ensToVendor; // ENS name -> vendor address\\r\\n    mapping(string => bool) public usedPhoneHashes; // Track used phone hashes\\r\\n    address[] public vendorAddresses; // Array of all vendor addresses\\r\\n    \\r\\n    // Verification requirements\\r\\n    bool public requirePhoneVerification = true;\\r\\n    bool public requireEFPVerification = true;\\r\\n    uint256 public minEFPasScore = 0; // Minimum EFPas score required (0 = not required)\\r\\n    \\r\\n    // Events\\r\\n    event VendorRegistered(\\r\\n        address indexed vendor,\\r\\n        string ensName,\\r\\n        string businessName,\\r\\n        string phoneHash\\r\\n    );\\r\\n    \\r\\n    event VendorApproved(address indexed vendor, string ensName);\\r\\n    event VendorSuspended(address indexed vendor, string reason);\\r\\n    event VendorRejected(address indexed vendor, string reason);\\r\\n    event VendorUpdated(address indexed vendor, string field);\\r\\n    event PhoneVerified(address indexed vendor, string phoneHash);\\r\\n    event EFPVerified(address indexed vendor, bool verified);\\r\\n    event EFPasScoreUpdated(address indexed vendor, uint256 score);\\r\\n    \\r\\n    // Modifiers\\r\\n    modifier onlyVendor() {\\r\\n        require(vendors[msg.sender].wallet != address(0), \\\"VendorRegistry: Not a registered vendor\\\");\\r\\n        _;\\r\\n    }\\r\\n    \\r\\n    modifier onlyActiveVendor() {\\r\\n        require(\\r\\n            vendors[msg.sender].wallet != address(0) && \\r\\n            vendors[msg.sender].status == VendorStatus.Active,\\r\\n            \\\"VendorRegistry: Not an active vendor\\\"\\r\\n        );\\r\\n        _;\\r\\n    }\\r\\n    \\r\\n    modifier onlyAdmin() {\\r\\n        require(msg.sender == owner(), \\\"VendorRegistry: Only admin can call this function\\\");\\r\\n        _;\\r\\n    }\\r\\n    \\r\\n    constructor() Ownable(msg.sender) {}\\r\\n    \\r\\n    /**\\r\\n     * @dev Register a new vendor\\r\\n     * @param ensName ENS subname for the vendor (e.g., \\\"business.tapngo.eth\\\")\\r\\n     * @param businessName Display name of the business\\r\\n     * @param phoneHash Hashed phone number\\r\\n     */\\r\\n    function registerVendor(\\r\\n        string memory ensName,\\r\\n        string memory businessName,\\r\\n        string memory phoneHash\\r\\n    ) external whenNotPaused {\\r\\n        require(vendors[msg.sender].wallet == address(0), \\\"VendorRegistry: Vendor already registered\\\");\\r\\n        require(bytes(ensName).length > 0, \\\"VendorRegistry: ENS name cannot be empty\\\");\\r\\n        require(bytes(businessName).length > 0, \\\"VendorRegistry: Business name cannot be empty\\\");\\r\\n        require(bytes(phoneHash).length > 0, \\\"VendorRegistry: Phone hash cannot be empty\\\");\\r\\n        require(ensToVendor[ensName] == address(0), \\\"VendorRegistry: ENS name already taken\\\");\\r\\n        require(!usedPhoneHashes[phoneHash], \\\"VendorRegistry: Phone number already used\\\");\\r\\n        \\r\\n        // Create vendor profile\\r\\n        VendorProfile memory newVendor = VendorProfile({\\r\\n            wallet: msg.sender,\\r\\n            ensName: ensName,\\r\\n            businessName: businessName,\\r\\n            phoneHash: phoneHash,\\r\\n            phoneVerified: false,\\r\\n            efpVerified: false,\\r\\n            efpasScore: 0,\\r\\n            status: VendorStatus.Pending,\\r\\n            registrationTime: block.timestamp,\\r\\n            lastUpdated: block.timestamp\\r\\n        });\\r\\n        \\r\\n        vendors[msg.sender] = newVendor;\\r\\n        ensToVendor[ensName] = msg.sender;\\r\\n        usedPhoneHashes[phoneHash] = true;\\r\\n        vendorAddresses.push(msg.sender);\\r\\n        \\r\\n        emit VendorRegistered(msg.sender, ensName, businessName, phoneHash);\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Approve a vendor (admin only)\\r\\n     * @param vendorAddress Address of the vendor to approve\\r\\n     */\\r\\n    function approveVendor(address vendorAddress) external onlyAdmin {\\r\\n        require(vendors[vendorAddress].wallet != address(0), \\\"VendorRegistry: Vendor not found\\\");\\r\\n        require(vendors[vendorAddress].status == VendorStatus.Pending, \\\"VendorRegistry: Vendor not pending\\\");\\r\\n        \\r\\n        // Check verification requirements\\r\\n        if (requirePhoneVerification) {\\r\\n            require(vendors[vendorAddress].phoneVerified, \\\"VendorRegistry: Phone verification required\\\");\\r\\n        }\\r\\n        if (requireEFPVerification) {\\r\\n            require(vendors[vendorAddress].efpVerified, \\\"VendorRegistry: EFP verification required\\\");\\r\\n        }\\r\\n        if (minEFPasScore > 0) {\\r\\n            require(vendors[vendorAddress].efpasScore >= minEFPasScore, \\\"VendorRegistry: EFPas score too low\\\");\\r\\n        }\\r\\n        \\r\\n        vendors[vendorAddress].status = VendorStatus.Active;\\r\\n        vendors[vendorAddress].lastUpdated = block.timestamp;\\r\\n        \\r\\n        emit VendorApproved(vendorAddress, vendors[vendorAddress].ensName);\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Suspend a vendor (admin only)\\r\\n     * @param vendorAddress Address of the vendor to suspend\\r\\n     * @param reason Reason for suspension\\r\\n     */\\r\\n    function suspendVendor(address vendorAddress, string memory reason) external onlyAdmin {\\r\\n        require(vendors[vendorAddress].wallet != address(0), \\\"VendorRegistry: Vendor not found\\\");\\r\\n        require(vendors[vendorAddress].status == VendorStatus.Active, \\\"VendorRegistry: Vendor not active\\\");\\r\\n        \\r\\n        vendors[vendorAddress].status = VendorStatus.Suspended;\\r\\n        vendors[vendorAddress].lastUpdated = block.timestamp;\\r\\n        \\r\\n        emit VendorSuspended(vendorAddress, reason);\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Reject a vendor registration (admin only)\\r\\n     * @param vendorAddress Address of the vendor to reject\\r\\n     * @param reason Reason for rejection\\r\\n     */\\r\\n    function rejectVendor(address vendorAddress, string memory reason) external onlyAdmin {\\r\\n        require(vendors[vendorAddress].wallet != address(0), \\\"VendorRegistry: Vendor not found\\\");\\r\\n        require(vendors[vendorAddress].status == VendorStatus.Pending, \\\"VendorRegistry: Vendor not pending\\\");\\r\\n        \\r\\n        vendors[vendorAddress].status = VendorStatus.Rejected;\\r\\n        vendors[vendorAddress].lastUpdated = block.timestamp;\\r\\n        \\r\\n        emit VendorRejected(vendorAddress, reason);\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Update vendor's phone verification status (admin only)\\r\\n     * @param vendorAddress Address of the vendor\\r\\n     * @param verified Verification status\\r\\n     */\\r\\n    function updatePhoneVerification(address vendorAddress, bool verified) external onlyAdmin {\\r\\n        require(vendors[vendorAddress].wallet != address(0), \\\"VendorRegistry: Vendor not found\\\");\\r\\n        \\r\\n        vendors[vendorAddress].phoneVerified = verified;\\r\\n        vendors[vendorAddress].lastUpdated = block.timestamp;\\r\\n        \\r\\n        emit PhoneVerified(vendorAddress, vendors[vendorAddress].phoneHash);\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Update vendor's EFP verification status (admin only)\\r\\n     * @param vendorAddress Address of the vendor\\r\\n     * @param verified Verification status\\r\\n     */\\r\\n    function updateEFPVerification(address vendorAddress, bool verified) external onlyAdmin {\\r\\n        require(vendors[vendorAddress].wallet != address(0), \\\"VendorRegistry: Vendor not found\\\");\\r\\n        \\r\\n        vendors[vendorAddress].efpVerified = verified;\\r\\n        vendors[vendorAddress].lastUpdated = block.timestamp;\\r\\n        \\r\\n        emit EFPVerified(vendorAddress, verified);\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Update vendor's EFPas score (admin only)\\r\\n     * @param vendorAddress Address of the vendor\\r\\n     * @param score EFPas reputation score\\r\\n     */\\r\\n    function updateEFPasScore(address vendorAddress, uint256 score) external onlyAdmin {\\r\\n        require(vendors[vendorAddress].wallet != address(0), \\\"VendorRegistry: Vendor not found\\\");\\r\\n        \\r\\n        vendors[vendorAddress].efpasScore = score;\\r\\n        vendors[vendorAddress].lastUpdated = block.timestamp;\\r\\n        \\r\\n        emit EFPasScoreUpdated(vendorAddress, score);\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Update business name (vendor only)\\r\\n     * @param newBusinessName New business name\\r\\n     */\\r\\n    function updateBusinessName(string memory newBusinessName) external onlyVendor {\\r\\n        require(bytes(newBusinessName).length > 0, \\\"VendorRegistry: Business name cannot be empty\\\");\\r\\n        \\r\\n        vendors[msg.sender].businessName = newBusinessName;\\r\\n        vendors[msg.sender].lastUpdated = block.timestamp;\\r\\n        \\r\\n        emit VendorUpdated(msg.sender, \\\"businessName\\\");\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Get vendor profile by address\\r\\n     * @param vendorAddress Address of the vendor\\r\\n     * @return profile Vendor profile struct\\r\\n     */\\r\\n    function getVendorProfile(address vendorAddress) external view returns (VendorProfile memory profile) {\\r\\n        require(vendors[vendorAddress].wallet != address(0), \\\"VendorRegistry: Vendor not found\\\");\\r\\n        return vendors[vendorAddress];\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Get vendor address by ENS name\\r\\n     * @param ensName ENS name to look up\\r\\n     * @return vendorAddress Address of the vendor\\r\\n     */\\r\\n    function getVendorByENS(string memory ensName) external view returns (address vendorAddress) {\\r\\n        return ensToVendor[ensName];\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Check if an address is a registered vendor\\r\\n     * @param vendorAddress Address to check\\r\\n     * @return isRegistered True if address is a registered vendor\\r\\n     */\\r\\n    function isVendor(address vendorAddress) external view returns (bool isRegistered) {\\r\\n        return vendors[vendorAddress].wallet != address(0);\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Check if a vendor is active\\r\\n     * @param vendorAddress Address to check\\r\\n     * @return isActive True if vendor is active\\r\\n     */\\r\\n    function isActiveVendor(address vendorAddress) external view returns (bool isActive) {\\r\\n        return vendors[vendorAddress].wallet != address(0) && \\r\\n               vendors[vendorAddress].status == VendorStatus.Active;\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Get total number of registered vendors\\r\\n     * @return count Total number of vendors\\r\\n     */\\r\\n    function getVendorCount() external view returns (uint256 count) {\\r\\n        return vendorAddresses.length;\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Get all vendor addresses (for pagination)\\r\\n     * @param offset Starting index\\r\\n     * @param limit Maximum number of addresses to return\\r\\n     * @return addresses Array of vendor addresses\\r\\n     */\\r\\n    function getVendorAddresses(uint256 offset, uint256 limit) external view returns (address[] memory addresses) {\\r\\n        require(offset < vendorAddresses.length, \\\"VendorRegistry: Offset out of bounds\\\");\\r\\n        \\r\\n        uint256 end = offset + limit;\\r\\n        if (end > vendorAddresses.length) {\\r\\n            end = vendorAddresses.length;\\r\\n        }\\r\\n        \\r\\n        address[] memory result = new address[](end - offset);\\r\\n        for (uint256 i = offset; i < end; i++) {\\r\\n            result[i - offset] = vendorAddresses[i];\\r\\n        }\\r\\n        \\r\\n        return result;\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Update verification requirements (admin only)\\r\\n     * @param phoneRequired Whether phone verification is required\\r\\n     * @param efpRequired Whether EFP verification is required\\r\\n     * @param minScore Minimum EFPas score required\\r\\n     */\\r\\n    function updateVerificationRequirements(\\r\\n        bool phoneRequired,\\r\\n        bool efpRequired,\\r\\n        uint256 minScore\\r\\n    ) external onlyAdmin {\\r\\n        requirePhoneVerification = phoneRequired;\\r\\n        requireEFPVerification = efpRequired;\\r\\n        minEFPasScore = minScore;\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Pause the contract (admin only)\\r\\n     */\\r\\n    function pause() external onlyAdmin {\\r\\n        _pause();\\r\\n    }\\r\\n    \\r\\n    /**\\r\\n     * @dev Unpause the contract (admin only)\\r\\n     */\\r\\n    function unpause() external onlyAdmin {\\r\\n        _unpause();\\r\\n    }\\r\\n}\\r\\n\",\"keccak256\":\"0xd489b176a6aaa264ba089ce8665709ea750694f864c54727aefa5aa8f5d6497a\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60806040526005805461ffff1916610101179055600060065534801561002457600080fd5b50338061004b57604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b6100548161005a565b506100aa565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b612417806100b96000396000f3fe608060405234801561001057600080fd5b50600436106101c45760003560e01c8063686b8a67116100f95780638b35efc111610097578063cafd6f9911610071578063cafd6f99146103fa578063ee54d54f1461040d578063f2fde38b1461043b578063f8a529231461044e57600080fd5b80638b35efc1146103c15780638da5cb5b146103e1578063a12eba7c146103f257600080fd5b8063715018a6116100d3578063715018a61461038b57806376e213c5146103935780638456cb59146103a6578063876a7e7c146103ae57600080fd5b8063686b8a671461033857806368d69a2e146103665780636b008fe71461037957600080fd5b8063353f20fd116101665780635480df89116101405780635480df89146102e0578063548d83bc1461030057806355450f5b146103135780635c975abb1461032657600080fd5b8063353f20fd146102b25780633f4ba83a146102c55780634c577b2f146102cd57600080fd5b80630fbafec5116101a25780630fbafec51461024c578063266b45a91461025f57806327e30c36146102725780632ddce5bc1461029b57600080fd5b8063041c06e5146101c9578063048063e41461021a5780630d4954bc14610237575b600080fd5b6101fd6101d7366004611bb0565b80516020818301810180516002825292820191909301209152546001600160a01b031681565b6040516001600160a01b0390911681526020015b60405180910390f35b6005546102279060ff1681565b6040519015158152602001610211565b61024a610245366004611c19565b610461565b005b61024a61025a366004611bb0565b610541565b61024a61026d366004611c4c565b610664565b610285610280366004611c9a565b6107ac565b6040516102119a99989796959493929190611d44565b6102a460065481565b604051908152602001610211565b6102276102c0366004611c9a565b6109a6565b61024a610a06565b61024a6102db366004611c19565b610a3a565b6102f36102ee366004611c9a565b610afe565b6040516102119190611dd1565b61024a61030e366004611ea5565b610d9b565b6101fd610321366004611ee1565b610df0565b600054600160a01b900460ff16610227565b610227610346366004611bb0565b805160208183018101805160038252928201919093012091525460ff1681565b61024a610374366004611efa565b610e1a565b60055461022790610100900460ff1681565b61024a610ed3565b6101fd6103a1366004611bb0565b610ee5565b61024a610f16565b61024a6103bc366004611f24565b610f48565b6103d46103cf366004611fac565b6113f0565b6040516102119190611fce565b6000546001600160a01b03166101fd565b6004546102a4565b61024a610408366004611c4c565b61153e565b61022761041b366004611c9a565b6001600160a01b0390811660009081526001602052604090205416151590565b61024a610449366004611c9a565b61164a565b61024a61045c366004611c9a565b611688565b6000546001600160a01b031633146104945760405162461bcd60e51b815260040161048b9061201b565b60405180910390fd5b6001600160a01b03828116600090815260016020526040902054166104cb5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b038216600081815260016020526040908190206004810180548515156101000261ff001990911617905542600890910155517fe7ae06dbad7c8b90d478b15b934d6f7a00d86737f426e8c4e78a11e3e0be68109061053590841515815260200190565b60405180910390a25050565b336000908152600160205260409020546001600160a01b03166105b65760405162461bcd60e51b815260206004820152602760248201527f56656e646f7252656769737472793a204e6f7420612072656769737465726564604482015266103b32b73237b960c91b606482015260840161048b565b60008151116105d75760405162461bcd60e51b815260040161048b906120a1565b3360009081526001602052604090206002016105f38282612177565b50336000818152600160205260409081902042600890910155517f5a267064c1d3bd94862199933cf0e19c0e03c66d83089c9e7abcca1585247e8590610659906020808252600c908201526b627573696e6573734e616d6560a01b604082015260600190565b60405180910390a250565b6000546001600160a01b0316331461068e5760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b03828116600090815260016020526040902054166106c55760405162461bcd60e51b815260040161048b9061206c565b60016001600160a01b03831660009081526001602052604090206006015460ff1660038111156106f7576106f7611d0c565b1461074e5760405162461bcd60e51b815260206004820152602160248201527f56656e646f7252656769737472793a2056656e646f72206e6f742061637469766044820152606560f81b606482015260840161048b565b6001600160a01b0382166000818152600160205260409081902060068101805460ff1916600217905542600890910155517fa7dcc59cea4d9fb0a53e0dd628725f50ce685ec458b32ad10c64b2fd811a9ad990610535908490612237565b6001602081905260009182526040909120805491810180546001600160a01b03909316926107d9906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610805906120ee565b80156108525780601f1061082757610100808354040283529160200191610852565b820191906000526020600020905b81548152906001019060200180831161083557829003601f168201915b505050505090806002018054610867906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610893906120ee565b80156108e05780601f106108b5576101008083540402835291602001916108e0565b820191906000526020600020905b8154815290600101906020018083116108c357829003601f168201915b5050505050908060030180546108f5906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610921906120ee565b801561096e5780601f106109435761010080835404028352916020019161096e565b820191906000526020600020905b81548152906001019060200180831161095157829003601f168201915b5050506004840154600585015460068601546007870154600890970154959660ff80851697610100909504811696509294509116918a565b6001600160a01b0381811660009081526001602052604081205490911615801590610a00575060016001600160a01b03831660009081526001602052604090206006015460ff1660038111156109fe576109fe611d0c565b145b92915050565b6000546001600160a01b03163314610a305760405162461bcd60e51b815260040161048b9061201b565b610a38611932565b565b6000546001600160a01b03163314610a645760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b0382811660009081526001602052604090205416610a9b5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b0382166000818152600160205260409081902060048101805460ff191685151517905542600882015590517f7189551f403aaef003487a5c07430518b0020189f4f001878dbd5337a3d864d9916105359160039091019061224a565b610b06611a9c565b6001600160a01b0382811660009081526001602052604090205416610b3d5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b038083166000908152600160208181526040928390208351610140810190945280549094168352908301805492939291840191610b80906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610bac906120ee565b8015610bf95780601f10610bce57610100808354040283529160200191610bf9565b820191906000526020600020905b815481529060010190602001808311610bdc57829003601f168201915b50505050508152602001600282018054610c12906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610c3e906120ee565b8015610c8b5780601f10610c6057610100808354040283529160200191610c8b565b820191906000526020600020905b815481529060010190602001808311610c6e57829003601f168201915b50505050508152602001600382018054610ca4906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610cd0906120ee565b8015610d1d5780601f10610cf257610100808354040283529160200191610d1d565b820191906000526020600020905b815481529060010190602001808311610d0057829003601f168201915b5050509183525050600482015460ff80821615156020840152610100909104811615156040830152600583015460608301526006830154608090920191166003811115610d6c57610d6c611d0c565b6003811115610d7d57610d7d611d0c565b81526007820154602082015260089091015460409091015292915050565b6000546001600160a01b03163314610dc55760405162461bcd60e51b815260040161048b9061201b565b6005805461ffff191693151561ff001916939093176101009215159290920291909117909155600655565b60048181548110610e0057600080fd5b6000918252602090912001546001600160a01b0316905081565b6000546001600160a01b03163314610e445760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b0382811660009081526001602052604090205416610e7b5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b038216600081815260016020526040908190206005810184905542600890910155517fe22afeb7ca0fa615f568bbfc1fad30819a3c887db4ac516c46b5feee5e1d2387906105359084815260200190565b610edb611987565b610a3860006119b4565b6000600282604051610ef791906122d5565b908152604051908190036020019020546001600160a01b031692915050565b6000546001600160a01b03163314610f405760405162461bcd60e51b815260040161048b9061201b565b610a38611a04565b610f50611a47565b336000908152600160205260409020546001600160a01b031615610fc85760405162461bcd60e51b815260206004820152602960248201527f56656e646f7252656769737472793a2056656e646f7220616c726561647920726044820152681959da5cdd195c995960ba1b606482015260840161048b565b600083511161102a5760405162461bcd60e51b815260206004820152602860248201527f56656e646f7252656769737472793a20454e53206e616d652063616e6e6f7420604482015267626520656d70747960c01b606482015260840161048b565b600082511161104b5760405162461bcd60e51b815260040161048b906120a1565b60008151116110af5760405162461bcd60e51b815260206004820152602a60248201527f56656e646f7252656769737472793a2050686f6e6520686173682063616e6e6f6044820152697420626520656d70747960b01b606482015260840161048b565b60006001600160a01b03166002846040516110ca91906122d5565b908152604051908190036020019020546001600160a01b03161461113f5760405162461bcd60e51b815260206004820152602660248201527f56656e646f7252656769737472793a20454e53206e616d6520616c7265616479604482015265103a30b5b2b760d11b606482015260840161048b565b60038160405161114f91906122d5565b9081526040519081900360200190205460ff16156111c15760405162461bcd60e51b815260206004820152602960248201527f56656e646f7252656769737472793a2050686f6e65206e756d62657220616c726044820152681958591e481d5cd95960ba1b606482015260840161048b565b60408051610140810182523380825260208083018781528385018790526060840186905260006080850181905260a0850181905260c0850181905260e0850181905242610100860181905261012086015292835260019182905293909120825181546001600160a01b0319166001600160a01b0390911617815592519192839290918201906112509082612177565b50604082015160028201906112659082612177565b506060820151600382019061127a9082612177565b50608082015160048201805460a085015115156101000261ff00199315159390931661ffff199091161791909117905560c0820151600582015560e082015160068201805460ff191660018360038111156112d7576112d7611d0c565b0217905550610100820151816007015561012082015181600801559050503360028560405161130691906122d5565b908152602001604051809103902060006101000a8154816001600160a01b0302191690836001600160a01b03160217905550600160038360405161134a91906122d5565b908152604051908190036020018120805492151560ff1990931692909217909155600480546001810182556000919091527f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19b0180546001600160a01b03191633908117909155907fb7cb408f8d7353de26cc4e3a1e9b971cd0d4d8ee1d5d71da06e27e4052c11448906113e2908790879087906122f1565b60405180910390a250505050565b60045460609083106114505760405162461bcd60e51b8152602060048201526024808201527f56656e646f7252656769737472793a204f6666736574206f7574206f6620626f604482015263756e647360e01b606482015260840161048b565b600061145c838561234a565b60045490915081111561146e57506004545b600061147a858361235d565b67ffffffffffffffff81111561149257611492611b0d565b6040519080825280602002602001820160405280156114bb578160200160208202803683370190505b509050845b8281101561153557600481815481106114db576114db612370565b6000918252602090912001546001600160a01b0316826114fb888461235d565b8151811061150b5761150b612370565b6001600160a01b03909216602092830291909101909101528061152d81612386565b9150506114c0565b50949350505050565b6000546001600160a01b031633146115685760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b038281166000908152600160205260409020541661159f5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b03821660009081526001602052604081206006015460ff1660038111156115cf576115cf611d0c565b146115ec5760405162461bcd60e51b815260040161048b9061239f565b6001600160a01b0382166000818152600160205260409081902060068101805460ff1916600317905542600890910155517fd0fa2267aeb6eb3f60c59933062902832cdc47ed8543e1aec1a41b81ba1133ed90610535908490612237565b611652611987565b6001600160a01b03811661167c57604051631e4fbdf760e01b81526000600482015260240161048b565b611685816119b4565b50565b6000546001600160a01b031633146116b25760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b03818116600090815260016020526040902054166116e95760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b03811660009081526001602052604081206006015460ff16600381111561171957611719611d0c565b146117365760405162461bcd60e51b815260040161048b9061239f565b60055460ff16156117c0576001600160a01b03811660009081526001602052604090206004015460ff166117c05760405162461bcd60e51b815260206004820152602b60248201527f56656e646f7252656769737472793a2050686f6e65207665726966696361746960448201526a1bdb881c995c5d5a5c995960aa1b606482015260840161048b565b600554610100900460ff1615611852576001600160a01b038116600090815260016020526040902060040154610100900460ff166118525760405162461bcd60e51b815260206004820152602960248201527f56656e646f7252656769737472793a2045465020766572696669636174696f6e604482015268081c995c5d5a5c995960ba1b606482015260840161048b565b600654156118d3576006546001600160a01b03821660009081526001602052604090206005015410156118d35760405162461bcd60e51b815260206004820152602360248201527f56656e646f7252656769737472793a2045465061732073636f726520746f6f206044820152626c6f7760e81b606482015260840161048b565b6001600160a01b03811660008181526001602081905260409182902060068101805460ff19168317905542600882015591517fc4c57a8f0acc04203206e4b6dc1a87d76f5cc2bd323ff05e1b3daecc8f497e0c9261065992019061224a565b61193a611a72565b6000805460ff60a01b191690557f5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa335b6040516001600160a01b03909116815260200160405180910390a1565b6000546001600160a01b03163314610a385760405163118cdaa760e01b815233600482015260240161048b565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b611a0c611a47565b6000805460ff60a01b1916600160a01b1790557f62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a25861196a3390565b600054600160a01b900460ff1615610a385760405163d93c066560e01b815260040160405180910390fd5b600054600160a01b900460ff16610a3857604051638dfc202b60e01b815260040160405180910390fd5b60405180610140016040528060006001600160a01b031681526020016060815260200160608152602001606081526020016000151581526020016000151581526020016000815260200160006003811115611af957611af9611d0c565b815260200160008152602001600081525090565b634e487b7160e01b600052604160045260246000fd5b600082601f830112611b3457600080fd5b813567ffffffffffffffff80821115611b4f57611b4f611b0d565b604051601f8301601f19908116603f01168101908282118183101715611b7757611b77611b0d565b81604052838152866020858801011115611b9057600080fd5b836020870160208301376000602085830101528094505050505092915050565b600060208284031215611bc257600080fd5b813567ffffffffffffffff811115611bd957600080fd5b611be584828501611b23565b949350505050565b80356001600160a01b0381168114611c0457600080fd5b919050565b80358015158114611c0457600080fd5b60008060408385031215611c2c57600080fd5b611c3583611bed565b9150611c4360208401611c09565b90509250929050565b60008060408385031215611c5f57600080fd5b611c6883611bed565b9150602083013567ffffffffffffffff811115611c8457600080fd5b611c9085828601611b23565b9150509250929050565b600060208284031215611cac57600080fd5b611cb582611bed565b9392505050565b60005b83811015611cd7578181015183820152602001611cbf565b50506000910152565b60008151808452611cf8816020860160208601611cbc565b601f01601f19169290920160200192915050565b634e487b7160e01b600052602160045260246000fd5b60048110611d4057634e487b7160e01b600052602160045260246000fd5b9052565b6001600160a01b038b16815261014060208201819052600090611d698382018d611ce0565b90508281036040840152611d7d818c611ce0565b90508281036060840152611d91818b611ce0565b915050871515608083015286151560a08301528560c0830152611db760e0830186611d22565b610100820193909352610120015298975050505050505050565b60208152611deb6020820183516001600160a01b03169052565b60006020830151610140806040850152611e09610160850183611ce0565b91506040850151601f1980868503016060870152611e278483611ce0565b9350606087015191508086850301608087015250611e458382611ce0565b9250506080850151611e5b60a086018215159052565b5060a085015180151560c08601525060c085015160e085015260e0850151610100611e8881870183611d22565b860151610120868101919091529095015193019290925250919050565b600080600060608486031215611eba57600080fd5b611ec384611c09565b9250611ed160208501611c09565b9150604084013590509250925092565b600060208284031215611ef357600080fd5b5035919050565b60008060408385031215611f0d57600080fd5b611f1683611bed565b946020939093013593505050565b600080600060608486031215611f3957600080fd5b833567ffffffffffffffff80821115611f5157600080fd5b611f5d87838801611b23565b94506020860135915080821115611f7357600080fd5b611f7f87838801611b23565b93506040860135915080821115611f9557600080fd5b50611fa286828701611b23565b9150509250925092565b60008060408385031215611fbf57600080fd5b50508035926020909101359150565b6020808252825182820181905260009190848201906040850190845b8181101561200f5783516001600160a01b031683529284019291840191600101611fea565b50909695505050505050565b60208082526031908201527f56656e646f7252656769737472793a204f6e6c792061646d696e2063616e206360408201527030b636103a3434b990333ab731ba34b7b760791b606082015260800190565b6020808252818101527f56656e646f7252656769737472793a2056656e646f72206e6f7420666f756e64604082015260600190565b6020808252602d908201527f56656e646f7252656769737472793a20427573696e657373206e616d6520636160408201526c6e6e6f7420626520656d70747960981b606082015260800190565b600181811c9082168061210257607f821691505b60208210810361212257634e487b7160e01b600052602260045260246000fd5b50919050565b601f82111561217257600081815260208120601f850160051c8101602086101561214f5750805b601f850160051c820191505b8181101561216e5782815560010161215b565b5050505b505050565b815167ffffffffffffffff81111561219157612191611b0d565b6121a58161219f84546120ee565b84612128565b602080601f8311600181146121da57600084156121c25750858301515b600019600386901b1c1916600185901b17855561216e565b600085815260208120601f198616915b82811015612209578886015182559484019460019091019084016121ea565b50858210156122275787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b602081526000611cb56020830184611ce0565b600060208083526000845461225e816120ee565b8084870152604060018084166000811461227f5760018114612299576122c7565b60ff1985168984015283151560051b8901830195506122c7565b896000528660002060005b858110156122bf5781548b82018601529083019088016122a4565b8a0184019650505b509398975050505050505050565b600082516122e7818460208701611cbc565b9190910192915050565b6060815260006123046060830186611ce0565b82810360208401526123168186611ce0565b9050828103604084015261232a8185611ce0565b9695505050505050565b634e487b7160e01b600052601160045260246000fd5b80820180821115610a0057610a00612334565b81810381811115610a0057610a00612334565b634e487b7160e01b600052603260045260246000fd5b60006001820161239857612398612334565b5060010190565b60208082526022908201527f56656e646f7252656769737472793a2056656e646f72206e6f742070656e64696040820152616e6760f01b60608201526080019056fea26469706673582212201d706039430fd28adaf0439da911ee156ead8a53e489a6a034414228de47564d64736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106101c45760003560e01c8063686b8a67116100f95780638b35efc111610097578063cafd6f9911610071578063cafd6f99146103fa578063ee54d54f1461040d578063f2fde38b1461043b578063f8a529231461044e57600080fd5b80638b35efc1146103c15780638da5cb5b146103e1578063a12eba7c146103f257600080fd5b8063715018a6116100d3578063715018a61461038b57806376e213c5146103935780638456cb59146103a6578063876a7e7c146103ae57600080fd5b8063686b8a671461033857806368d69a2e146103665780636b008fe71461037957600080fd5b8063353f20fd116101665780635480df89116101405780635480df89146102e0578063548d83bc1461030057806355450f5b146103135780635c975abb1461032657600080fd5b8063353f20fd146102b25780633f4ba83a146102c55780634c577b2f146102cd57600080fd5b80630fbafec5116101a25780630fbafec51461024c578063266b45a91461025f57806327e30c36146102725780632ddce5bc1461029b57600080fd5b8063041c06e5146101c9578063048063e41461021a5780630d4954bc14610237575b600080fd5b6101fd6101d7366004611bb0565b80516020818301810180516002825292820191909301209152546001600160a01b031681565b6040516001600160a01b0390911681526020015b60405180910390f35b6005546102279060ff1681565b6040519015158152602001610211565b61024a610245366004611c19565b610461565b005b61024a61025a366004611bb0565b610541565b61024a61026d366004611c4c565b610664565b610285610280366004611c9a565b6107ac565b6040516102119a99989796959493929190611d44565b6102a460065481565b604051908152602001610211565b6102276102c0366004611c9a565b6109a6565b61024a610a06565b61024a6102db366004611c19565b610a3a565b6102f36102ee366004611c9a565b610afe565b6040516102119190611dd1565b61024a61030e366004611ea5565b610d9b565b6101fd610321366004611ee1565b610df0565b600054600160a01b900460ff16610227565b610227610346366004611bb0565b805160208183018101805160038252928201919093012091525460ff1681565b61024a610374366004611efa565b610e1a565b60055461022790610100900460ff1681565b61024a610ed3565b6101fd6103a1366004611bb0565b610ee5565b61024a610f16565b61024a6103bc366004611f24565b610f48565b6103d46103cf366004611fac565b6113f0565b6040516102119190611fce565b6000546001600160a01b03166101fd565b6004546102a4565b61024a610408366004611c4c565b61153e565b61022761041b366004611c9a565b6001600160a01b0390811660009081526001602052604090205416151590565b61024a610449366004611c9a565b61164a565b61024a61045c366004611c9a565b611688565b6000546001600160a01b031633146104945760405162461bcd60e51b815260040161048b9061201b565b60405180910390fd5b6001600160a01b03828116600090815260016020526040902054166104cb5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b038216600081815260016020526040908190206004810180548515156101000261ff001990911617905542600890910155517fe7ae06dbad7c8b90d478b15b934d6f7a00d86737f426e8c4e78a11e3e0be68109061053590841515815260200190565b60405180910390a25050565b336000908152600160205260409020546001600160a01b03166105b65760405162461bcd60e51b815260206004820152602760248201527f56656e646f7252656769737472793a204e6f7420612072656769737465726564604482015266103b32b73237b960c91b606482015260840161048b565b60008151116105d75760405162461bcd60e51b815260040161048b906120a1565b3360009081526001602052604090206002016105f38282612177565b50336000818152600160205260409081902042600890910155517f5a267064c1d3bd94862199933cf0e19c0e03c66d83089c9e7abcca1585247e8590610659906020808252600c908201526b627573696e6573734e616d6560a01b604082015260600190565b60405180910390a250565b6000546001600160a01b0316331461068e5760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b03828116600090815260016020526040902054166106c55760405162461bcd60e51b815260040161048b9061206c565b60016001600160a01b03831660009081526001602052604090206006015460ff1660038111156106f7576106f7611d0c565b1461074e5760405162461bcd60e51b815260206004820152602160248201527f56656e646f7252656769737472793a2056656e646f72206e6f742061637469766044820152606560f81b606482015260840161048b565b6001600160a01b0382166000818152600160205260409081902060068101805460ff1916600217905542600890910155517fa7dcc59cea4d9fb0a53e0dd628725f50ce685ec458b32ad10c64b2fd811a9ad990610535908490612237565b6001602081905260009182526040909120805491810180546001600160a01b03909316926107d9906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610805906120ee565b80156108525780601f1061082757610100808354040283529160200191610852565b820191906000526020600020905b81548152906001019060200180831161083557829003601f168201915b505050505090806002018054610867906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610893906120ee565b80156108e05780601f106108b5576101008083540402835291602001916108e0565b820191906000526020600020905b8154815290600101906020018083116108c357829003601f168201915b5050505050908060030180546108f5906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610921906120ee565b801561096e5780601f106109435761010080835404028352916020019161096e565b820191906000526020600020905b81548152906001019060200180831161095157829003601f168201915b5050506004840154600585015460068601546007870154600890970154959660ff80851697610100909504811696509294509116918a565b6001600160a01b0381811660009081526001602052604081205490911615801590610a00575060016001600160a01b03831660009081526001602052604090206006015460ff1660038111156109fe576109fe611d0c565b145b92915050565b6000546001600160a01b03163314610a305760405162461bcd60e51b815260040161048b9061201b565b610a38611932565b565b6000546001600160a01b03163314610a645760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b0382811660009081526001602052604090205416610a9b5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b0382166000818152600160205260409081902060048101805460ff191685151517905542600882015590517f7189551f403aaef003487a5c07430518b0020189f4f001878dbd5337a3d864d9916105359160039091019061224a565b610b06611a9c565b6001600160a01b0382811660009081526001602052604090205416610b3d5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b038083166000908152600160208181526040928390208351610140810190945280549094168352908301805492939291840191610b80906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610bac906120ee565b8015610bf95780601f10610bce57610100808354040283529160200191610bf9565b820191906000526020600020905b815481529060010190602001808311610bdc57829003601f168201915b50505050508152602001600282018054610c12906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610c3e906120ee565b8015610c8b5780601f10610c6057610100808354040283529160200191610c8b565b820191906000526020600020905b815481529060010190602001808311610c6e57829003601f168201915b50505050508152602001600382018054610ca4906120ee565b80601f0160208091040260200160405190810160405280929190818152602001828054610cd0906120ee565b8015610d1d5780601f10610cf257610100808354040283529160200191610d1d565b820191906000526020600020905b815481529060010190602001808311610d0057829003601f168201915b5050509183525050600482015460ff80821615156020840152610100909104811615156040830152600583015460608301526006830154608090920191166003811115610d6c57610d6c611d0c565b6003811115610d7d57610d7d611d0c565b81526007820154602082015260089091015460409091015292915050565b6000546001600160a01b03163314610dc55760405162461bcd60e51b815260040161048b9061201b565b6005805461ffff191693151561ff001916939093176101009215159290920291909117909155600655565b60048181548110610e0057600080fd5b6000918252602090912001546001600160a01b0316905081565b6000546001600160a01b03163314610e445760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b0382811660009081526001602052604090205416610e7b5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b038216600081815260016020526040908190206005810184905542600890910155517fe22afeb7ca0fa615f568bbfc1fad30819a3c887db4ac516c46b5feee5e1d2387906105359084815260200190565b610edb611987565b610a3860006119b4565b6000600282604051610ef791906122d5565b908152604051908190036020019020546001600160a01b031692915050565b6000546001600160a01b03163314610f405760405162461bcd60e51b815260040161048b9061201b565b610a38611a04565b610f50611a47565b336000908152600160205260409020546001600160a01b031615610fc85760405162461bcd60e51b815260206004820152602960248201527f56656e646f7252656769737472793a2056656e646f7220616c726561647920726044820152681959da5cdd195c995960ba1b606482015260840161048b565b600083511161102a5760405162461bcd60e51b815260206004820152602860248201527f56656e646f7252656769737472793a20454e53206e616d652063616e6e6f7420604482015267626520656d70747960c01b606482015260840161048b565b600082511161104b5760405162461bcd60e51b815260040161048b906120a1565b60008151116110af5760405162461bcd60e51b815260206004820152602a60248201527f56656e646f7252656769737472793a2050686f6e6520686173682063616e6e6f6044820152697420626520656d70747960b01b606482015260840161048b565b60006001600160a01b03166002846040516110ca91906122d5565b908152604051908190036020019020546001600160a01b03161461113f5760405162461bcd60e51b815260206004820152602660248201527f56656e646f7252656769737472793a20454e53206e616d6520616c7265616479604482015265103a30b5b2b760d11b606482015260840161048b565b60038160405161114f91906122d5565b9081526040519081900360200190205460ff16156111c15760405162461bcd60e51b815260206004820152602960248201527f56656e646f7252656769737472793a2050686f6e65206e756d62657220616c726044820152681958591e481d5cd95960ba1b606482015260840161048b565b60408051610140810182523380825260208083018781528385018790526060840186905260006080850181905260a0850181905260c0850181905260e0850181905242610100860181905261012086015292835260019182905293909120825181546001600160a01b0319166001600160a01b0390911617815592519192839290918201906112509082612177565b50604082015160028201906112659082612177565b506060820151600382019061127a9082612177565b50608082015160048201805460a085015115156101000261ff00199315159390931661ffff199091161791909117905560c0820151600582015560e082015160068201805460ff191660018360038111156112d7576112d7611d0c565b0217905550610100820151816007015561012082015181600801559050503360028560405161130691906122d5565b908152602001604051809103902060006101000a8154816001600160a01b0302191690836001600160a01b03160217905550600160038360405161134a91906122d5565b908152604051908190036020018120805492151560ff1990931692909217909155600480546001810182556000919091527f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19b0180546001600160a01b03191633908117909155907fb7cb408f8d7353de26cc4e3a1e9b971cd0d4d8ee1d5d71da06e27e4052c11448906113e2908790879087906122f1565b60405180910390a250505050565b60045460609083106114505760405162461bcd60e51b8152602060048201526024808201527f56656e646f7252656769737472793a204f6666736574206f7574206f6620626f604482015263756e647360e01b606482015260840161048b565b600061145c838561234a565b60045490915081111561146e57506004545b600061147a858361235d565b67ffffffffffffffff81111561149257611492611b0d565b6040519080825280602002602001820160405280156114bb578160200160208202803683370190505b509050845b8281101561153557600481815481106114db576114db612370565b6000918252602090912001546001600160a01b0316826114fb888461235d565b8151811061150b5761150b612370565b6001600160a01b03909216602092830291909101909101528061152d81612386565b9150506114c0565b50949350505050565b6000546001600160a01b031633146115685760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b038281166000908152600160205260409020541661159f5760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b03821660009081526001602052604081206006015460ff1660038111156115cf576115cf611d0c565b146115ec5760405162461bcd60e51b815260040161048b9061239f565b6001600160a01b0382166000818152600160205260409081902060068101805460ff1916600317905542600890910155517fd0fa2267aeb6eb3f60c59933062902832cdc47ed8543e1aec1a41b81ba1133ed90610535908490612237565b611652611987565b6001600160a01b03811661167c57604051631e4fbdf760e01b81526000600482015260240161048b565b611685816119b4565b50565b6000546001600160a01b031633146116b25760405162461bcd60e51b815260040161048b9061201b565b6001600160a01b03818116600090815260016020526040902054166116e95760405162461bcd60e51b815260040161048b9061206c565b6001600160a01b03811660009081526001602052604081206006015460ff16600381111561171957611719611d0c565b146117365760405162461bcd60e51b815260040161048b9061239f565b60055460ff16156117c0576001600160a01b03811660009081526001602052604090206004015460ff166117c05760405162461bcd60e51b815260206004820152602b60248201527f56656e646f7252656769737472793a2050686f6e65207665726966696361746960448201526a1bdb881c995c5d5a5c995960aa1b606482015260840161048b565b600554610100900460ff1615611852576001600160a01b038116600090815260016020526040902060040154610100900460ff166118525760405162461bcd60e51b815260206004820152602960248201527f56656e646f7252656769737472793a2045465020766572696669636174696f6e604482015268081c995c5d5a5c995960ba1b606482015260840161048b565b600654156118d3576006546001600160a01b03821660009081526001602052604090206005015410156118d35760405162461bcd60e51b815260206004820152602360248201527f56656e646f7252656769737472793a2045465061732073636f726520746f6f206044820152626c6f7760e81b606482015260840161048b565b6001600160a01b03811660008181526001602081905260409182902060068101805460ff19168317905542600882015591517fc4c57a8f0acc04203206e4b6dc1a87d76f5cc2bd323ff05e1b3daecc8f497e0c9261065992019061224a565b61193a611a72565b6000805460ff60a01b191690557f5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa335b6040516001600160a01b03909116815260200160405180910390a1565b6000546001600160a01b03163314610a385760405163118cdaa760e01b815233600482015260240161048b565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b611a0c611a47565b6000805460ff60a01b1916600160a01b1790557f62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a25861196a3390565b600054600160a01b900460ff1615610a385760405163d93c066560e01b815260040160405180910390fd5b600054600160a01b900460ff16610a3857604051638dfc202b60e01b815260040160405180910390fd5b60405180610140016040528060006001600160a01b031681526020016060815260200160608152602001606081526020016000151581526020016000151581526020016000815260200160006003811115611af957611af9611d0c565b815260200160008152602001600081525090565b634e487b7160e01b600052604160045260246000fd5b600082601f830112611b3457600080fd5b813567ffffffffffffffff80821115611b4f57611b4f611b0d565b604051601f8301601f19908116603f01168101908282118183101715611b7757611b77611b0d565b81604052838152866020858801011115611b9057600080fd5b836020870160208301376000602085830101528094505050505092915050565b600060208284031215611bc257600080fd5b813567ffffffffffffffff811115611bd957600080fd5b611be584828501611b23565b949350505050565b80356001600160a01b0381168114611c0457600080fd5b919050565b80358015158114611c0457600080fd5b60008060408385031215611c2c57600080fd5b611c3583611bed565b9150611c4360208401611c09565b90509250929050565b60008060408385031215611c5f57600080fd5b611c6883611bed565b9150602083013567ffffffffffffffff811115611c8457600080fd5b611c9085828601611b23565b9150509250929050565b600060208284031215611cac57600080fd5b611cb582611bed565b9392505050565b60005b83811015611cd7578181015183820152602001611cbf565b50506000910152565b60008151808452611cf8816020860160208601611cbc565b601f01601f19169290920160200192915050565b634e487b7160e01b600052602160045260246000fd5b60048110611d4057634e487b7160e01b600052602160045260246000fd5b9052565b6001600160a01b038b16815261014060208201819052600090611d698382018d611ce0565b90508281036040840152611d7d818c611ce0565b90508281036060840152611d91818b611ce0565b915050871515608083015286151560a08301528560c0830152611db760e0830186611d22565b610100820193909352610120015298975050505050505050565b60208152611deb6020820183516001600160a01b03169052565b60006020830151610140806040850152611e09610160850183611ce0565b91506040850151601f1980868503016060870152611e278483611ce0565b9350606087015191508086850301608087015250611e458382611ce0565b9250506080850151611e5b60a086018215159052565b5060a085015180151560c08601525060c085015160e085015260e0850151610100611e8881870183611d22565b860151610120868101919091529095015193019290925250919050565b600080600060608486031215611eba57600080fd5b611ec384611c09565b9250611ed160208501611c09565b9150604084013590509250925092565b600060208284031215611ef357600080fd5b5035919050565b60008060408385031215611f0d57600080fd5b611f1683611bed565b946020939093013593505050565b600080600060608486031215611f3957600080fd5b833567ffffffffffffffff80821115611f5157600080fd5b611f5d87838801611b23565b94506020860135915080821115611f7357600080fd5b611f7f87838801611b23565b93506040860135915080821115611f9557600080fd5b50611fa286828701611b23565b9150509250925092565b60008060408385031215611fbf57600080fd5b50508035926020909101359150565b6020808252825182820181905260009190848201906040850190845b8181101561200f5783516001600160a01b031683529284019291840191600101611fea565b50909695505050505050565b60208082526031908201527f56656e646f7252656769737472793a204f6e6c792061646d696e2063616e206360408201527030b636103a3434b990333ab731ba34b7b760791b606082015260800190565b6020808252818101527f56656e646f7252656769737472793a2056656e646f72206e6f7420666f756e64604082015260600190565b6020808252602d908201527f56656e646f7252656769737472793a20427573696e657373206e616d6520636160408201526c6e6e6f7420626520656d70747960981b606082015260800190565b600181811c9082168061210257607f821691505b60208210810361212257634e487b7160e01b600052602260045260246000fd5b50919050565b601f82111561217257600081815260208120601f850160051c8101602086101561214f5750805b601f850160051c820191505b8181101561216e5782815560010161215b565b5050505b505050565b815167ffffffffffffffff81111561219157612191611b0d565b6121a58161219f84546120ee565b84612128565b602080601f8311600181146121da57600084156121c25750858301515b600019600386901b1c1916600185901b17855561216e565b600085815260208120601f198616915b82811015612209578886015182559484019460019091019084016121ea565b50858210156122275787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b602081526000611cb56020830184611ce0565b600060208083526000845461225e816120ee565b8084870152604060018084166000811461227f5760018114612299576122c7565b60ff1985168984015283151560051b8901830195506122c7565b896000528660002060005b858110156122bf5781548b82018601529083019088016122a4565b8a0184019650505b509398975050505050505050565b600082516122e7818460208701611cbc565b9190910192915050565b6060815260006123046060830186611ce0565b82810360208401526123168186611ce0565b9050828103604084015261232a8185611ce0565b9695505050505050565b634e487b7160e01b600052601160045260246000fd5b80820180821115610a0057610a00612334565b81810381811115610a0057610a00612334565b634e487b7160e01b600052603260045260246000fd5b60006001820161239857612398612334565b5060010190565b60208082526022908201527f56656e646f7252656769737472793a2056656e646f72206e6f742070656e64696040820152616e6760f01b60608201526080019056fea26469706673582212201d706039430fd28adaf0439da911ee156ead8a53e489a6a034414228de47564d64736f6c63430008140033",
+  "devdoc": {
+    "details": "Registry for managing vendor profiles and verification status Stores vendor information including ENS names, phone verification, EFP verification, and EFPas scores",
+    "errors": {
+      "EnforcedPause()": [
+        {
+          "details": "The operation failed because the contract is paused."
+        }
+      ],
+      "ExpectedPause()": [
+        {
+          "details": "The operation failed because the contract is not paused."
+        }
+      ],
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ]
+    },
+    "events": {
+      "Paused(address)": {
+        "details": "Emitted when the pause is triggered by `account`."
+      },
+      "Unpaused(address)": {
+        "details": "Emitted when the pause is lifted by `account`."
+      }
+    },
+    "kind": "dev",
+    "methods": {
+      "approveVendor(address)": {
+        "details": "Approve a vendor (admin only)",
+        "params": {
+          "vendorAddress": "Address of the vendor to approve"
+        }
+      },
+      "getVendorAddresses(uint256,uint256)": {
+        "details": "Get all vendor addresses (for pagination)",
+        "params": {
+          "limit": "Maximum number of addresses to return",
+          "offset": "Starting index"
+        },
+        "returns": {
+          "addresses": "Array of vendor addresses"
+        }
+      },
+      "getVendorByENS(string)": {
+        "details": "Get vendor address by ENS name",
+        "params": {
+          "ensName": "ENS name to look up"
+        },
+        "returns": {
+          "vendorAddress": "Address of the vendor"
+        }
+      },
+      "getVendorCount()": {
+        "details": "Get total number of registered vendors",
+        "returns": {
+          "count": "Total number of vendors"
+        }
+      },
+      "getVendorProfile(address)": {
+        "details": "Get vendor profile by address",
+        "params": {
+          "vendorAddress": "Address of the vendor"
+        },
+        "returns": {
+          "profile": "Vendor profile struct"
+        }
+      },
+      "isActiveVendor(address)": {
+        "details": "Check if a vendor is active",
+        "params": {
+          "vendorAddress": "Address to check"
+        },
+        "returns": {
+          "isActive": "True if vendor is active"
+        }
+      },
+      "isVendor(address)": {
+        "details": "Check if an address is a registered vendor",
+        "params": {
+          "vendorAddress": "Address to check"
+        },
+        "returns": {
+          "isRegistered": "True if address is a registered vendor"
+        }
+      },
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "pause()": {
+        "details": "Pause the contract (admin only)"
+      },
+      "paused()": {
+        "details": "Returns true if the contract is paused, and false otherwise."
+      },
+      "registerVendor(string,string,string)": {
+        "details": "Register a new vendor",
+        "params": {
+          "businessName": "Display name of the business",
+          "ensName": "ENS subname for the vendor (e.g., \"business.tapngo.eth\")",
+          "phoneHash": "Hashed phone number"
+        }
+      },
+      "rejectVendor(address,string)": {
+        "details": "Reject a vendor registration (admin only)",
+        "params": {
+          "reason": "Reason for rejection",
+          "vendorAddress": "Address of the vendor to reject"
+        }
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "suspendVendor(address,string)": {
+        "details": "Suspend a vendor (admin only)",
+        "params": {
+          "reason": "Reason for suspension",
+          "vendorAddress": "Address of the vendor to suspend"
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      },
+      "unpause()": {
+        "details": "Unpause the contract (admin only)"
+      },
+      "updateBusinessName(string)": {
+        "details": "Update business name (vendor only)",
+        "params": {
+          "newBusinessName": "New business name"
+        }
+      },
+      "updateEFPVerification(address,bool)": {
+        "details": "Update vendor's EFP verification status (admin only)",
+        "params": {
+          "vendorAddress": "Address of the vendor",
+          "verified": "Verification status"
+        }
+      },
+      "updateEFPasScore(address,uint256)": {
+        "details": "Update vendor's EFPas score (admin only)",
+        "params": {
+          "score": "EFPas reputation score",
+          "vendorAddress": "Address of the vendor"
+        }
+      },
+      "updatePhoneVerification(address,bool)": {
+        "details": "Update vendor's phone verification status (admin only)",
+        "params": {
+          "vendorAddress": "Address of the vendor",
+          "verified": "Verification status"
+        }
+      },
+      "updateVerificationRequirements(bool,bool,uint256)": {
+        "details": "Update verification requirements (admin only)",
+        "params": {
+          "efpRequired": "Whether EFP verification is required",
+          "minScore": "Minimum EFPas score required",
+          "phoneRequired": "Whether phone verification is required"
+        }
+      }
+    },
+    "title": "VendorRegistry",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 8,
+        "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 942,
+        "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+        "label": "_paused",
+        "offset": 20,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 3956,
+        "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+        "label": "vendors",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_mapping(t_address,t_struct(VendorProfile)3951_storage)"
+      },
+      {
+        "astId": 3960,
+        "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+        "label": "ensToVendor",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_string_memory_ptr,t_address)"
+      },
+      {
+        "astId": 3964,
+        "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+        "label": "usedPhoneHashes",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_mapping(t_string_memory_ptr,t_bool)"
+      },
+      {
+        "astId": 3967,
+        "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+        "label": "vendorAddresses",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_array(t_address)dyn_storage"
+      },
+      {
+        "astId": 3970,
+        "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+        "label": "requirePhoneVerification",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_bool"
+      },
+      {
+        "astId": 3973,
+        "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+        "label": "requireEFPVerification",
+        "offset": 1,
+        "slot": "5",
+        "type": "t_bool"
+      },
+      {
+        "astId": 3976,
+        "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+        "label": "minEFPasScore",
+        "offset": 0,
+        "slot": "6",
+        "type": "t_uint256"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_address)dyn_storage": {
+        "base": "t_address",
+        "encoding": "dynamic_array",
+        "label": "address[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_enum(VendorStatus)3929": {
+        "encoding": "inplace",
+        "label": "enum VendorRegistry.VendorStatus",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_struct(VendorProfile)3951_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct VendorRegistry.VendorProfile)",
+        "numberOfBytes": "32",
+        "value": "t_struct(VendorProfile)3951_storage"
+      },
+      "t_mapping(t_string_memory_ptr,t_address)": {
+        "encoding": "mapping",
+        "key": "t_string_memory_ptr",
+        "label": "mapping(string => address)",
+        "numberOfBytes": "32",
+        "value": "t_address"
+      },
+      "t_mapping(t_string_memory_ptr,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_string_memory_ptr",
+        "label": "mapping(string => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_string_memory_ptr": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(VendorProfile)3951_storage": {
+        "encoding": "inplace",
+        "label": "struct VendorRegistry.VendorProfile",
+        "members": [
+          {
+            "astId": 3931,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "wallet",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 3933,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "ensName",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 3935,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "businessName",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 3937,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "phoneHash",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 3939,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "phoneVerified",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_bool"
+          },
+          {
+            "astId": 3941,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "efpVerified",
+            "offset": 1,
+            "slot": "4",
+            "type": "t_bool"
+          },
+          {
+            "astId": 3943,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "efpasScore",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 3946,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "status",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_enum(VendorStatus)3929"
+          },
+          {
+            "astId": 3948,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "registrationTime",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 3950,
+            "contract": "contracts/VendorRegistry.sol:VendorRegistry",
+            "label": "lastUpdated",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "288"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
