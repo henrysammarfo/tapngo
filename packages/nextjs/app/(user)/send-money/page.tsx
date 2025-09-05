@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { CheckIcon, ChevronLeftIcon } from "@heroicons/react/20/solid";
+import { CheckIcon } from "@heroicons/react/20/solid";
+import BackArrow from "~~/components/BackArrow";
 
 const SendMoney = () => {
-  const router = useRouter();
   const [selectedAmount, setSelectedAmount] = useState("₵50");
-  const [transferComplete, setTransferComplete] = useState(false);
+  //  const [transferComplete, setTransferComplete] = useState(false);
 
   const quickAmounts = ["₵10", "₵25", "₵50"];
 
@@ -17,9 +16,8 @@ const SendMoney = () => {
       <div className="lg:hidden min-h-screen bg-gray-100">
         {/* Header */}
         <div className="bg-white px-4 py-3 flex items-center justify-between border-b border-gray-200">
-          <button onClick={() => router.back()} className="p-1">
-            <ChevronLeftIcon width={24} height={24} className="text-gray-600" />
-          </button>
+          <BackArrow />
+
           <h1 className="text-lg font-semibold text-gray-900">Send Money</h1>
           <div className="w-6"></div>
         </div>
@@ -103,9 +101,8 @@ const SendMoney = () => {
       <div className="hidden lg:block min-h-screen bg-gray-100">
         {/* Header */}
         <div className="bg-white px-8 py-4 flex items-center justify-between border-b border-gray-200">
-          <button onClick={() => router.back()} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <ChevronLeftIcon width={24} height={24} className="text-gray-600" />
-          </button>
+          <BackArrow />
+
           <h1 className="text-2xl font-semibold text-gray-900">Send Money</h1>
           <div className="w-10"></div>
         </div>

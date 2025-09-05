@@ -11,14 +11,14 @@ const PayWithTapNgo = () => {
     {
       icon: "qr",
       title: "Scan QR Code",
-      description: "Scan merchant's QR to pay",
+      description: "Scan merchant&apos;s QR to pay",
       color: "bg-blue-500",
       onClick: () => router.push("/payment"),
     },
     {
       icon: "tap",
       title: "Tap to Pay",
-      description: "Hold near merchant's device",
+      description: "Hold near merchant&apos;s device",
       color: "bg-purple-500",
       onClick: () => router.push("/accept-payment"),
     },
@@ -129,7 +129,7 @@ const PayWithTapNgo = () => {
                     <span className="text-green-600 text-sm font-bold">A</span>
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">Ama's Waakye</p>
+                    <p className="font-medium text-gray-900">Ama&apos;s Waakye</p>
                     <p className="text-sm text-gray-500">2 mins ago</p>
                   </div>
                   <div className="text-right">
@@ -142,7 +142,7 @@ const PayWithTapNgo = () => {
                     <span className="text-blue-600 text-sm font-bold">K</span>
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">Kofi's Kenkey</p>
+                    <p className="font-medium text-gray-900">Kofi&apos;s Kenkey</p>
                     <p className="text-sm text-gray-500">15 mins ago</p>
                   </div>
                   <div className="text-right">
@@ -155,7 +155,7 @@ const PayWithTapNgo = () => {
                     <span className="text-purple-600 text-sm font-bold">Y</span>
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">Yaa's Banku</p>
+                    <p className="font-medium text-gray-900">Yaa&apos;s Banku</p>
                     <p className="text-sm text-gray-500">1 hour ago</p>
                   </div>
                   <div className="text-right">
@@ -259,7 +259,7 @@ const PayWithTapNgo = () => {
                         <span className="text-green-600 text-sm font-bold">A</span>
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900">Ama's Waakye</p>
+                        <p className="font-medium text-gray-900">Ama&apos;s Waakye</p>
                         <p className="text-sm text-gray-500">2 mins ago</p>
                       </div>
                       <div className="text-right">
@@ -272,7 +272,7 @@ const PayWithTapNgo = () => {
                         <span className="text-blue-600 text-sm font-bold">K</span>
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900">Kofi's Kenkey</p>
+                        <p className="font-medium text-gray-900">Kofi&apos;s Kenkey</p>
                         <p className="text-sm text-gray-500">15 mins ago</p>
                       </div>
                       <div className="text-right">
@@ -285,7 +285,7 @@ const PayWithTapNgo = () => {
                         <span className="text-purple-600 text-sm font-bold">Y</span>
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900">Yaa's Banku</p>
+                        <p className="font-medium text-gray-900">Yaa&apos;s Banku</p>
                         <p className="text-sm text-gray-500">1 hour ago</p>
                       </div>
                       <div className="text-right">

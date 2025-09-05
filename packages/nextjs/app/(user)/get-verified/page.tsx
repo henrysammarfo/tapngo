@@ -1,18 +1,14 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
-import { ChevronLeftIcon } from "@heroicons/react/20/solid";
 import { CheckIcon } from "@heroicons/react/20/solid";
+import BackArrow from "~~/components/BackArrow";
 
 const GetVerified = () => {
-  const router = useRouter();
-
   return (
     <>
-      <div className="">
-        <ChevronLeftIcon width={40} height={40} color="black" onClick={() => router.back()} />
-      </div>
+      <BackArrow />
+
       {/* Mobile and Tablet Layout (sm and md screens) */}
       <div className="lg:hidden min-h-screen bg-gray-100 p-4">
         {/* Main Content Card */}

@@ -1,21 +1,16 @@
-"use client";
-
 import React from "react";
-import { useRouter } from "next/navigation";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import BackArrow from "~~/components/BackArrow";
 
 const Payment = () => {
-  const router = useRouter();
-
   return (
     <>
       {/* Mobile and Tablet Layout (sm and md screens) */}
       <div className="lg:hidden min-h-screen bg-gray-100">
         {/* Header */}
         <div className="bg-white px-4 py-3 flex items-center justify-between border-b border-gray-200">
-          <button onClick={() => router.back()} className="p-1">
-            <ChevronLeftIcon width={24} height={24} className="text-gray-600" />
-          </button>
+          <BackArrow />
+
           <h1 className="text-lg font-semibold text-gray-900">Payment</h1>
           <div className="w-6"></div>
         </div>
@@ -28,7 +23,7 @@ const Payment = () => {
               <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4">
                 <span className="text-white text-xl font-bold">A</span>
               </div>
-              <h2 className="text-xl font-bold text-gray-900 mb-1">Ama's Waakye Spot</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-1">Ama&apos;s Waakye Spot</h2>
               <p className="text-gray-500 text-sm">ama-waakye.tapngo.eth</p>
             </div>
           </div>
@@ -116,9 +111,8 @@ const Payment = () => {
       <div className="hidden lg:block min-h-screen bg-gray-100">
         {/* Header */}
         <div className="bg-white px-8 py-4 flex items-center justify-between border-b border-gray-200">
-          <button onClick={() => router.back()} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <ChevronLeftIcon width={24} height={24} className="text-gray-600" />
-          </button>
+          <BackArrow />
+
           <h1 className="text-2xl font-semibold text-gray-900">Payment</h1>
           <div className="w-10"></div>
         </div>
@@ -135,7 +129,7 @@ const Payment = () => {
                     <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6">
                       <span className="text-white text-2xl font-bold">A</span>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Ama's Waakye Spot</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Ama&apos;s Waakye Spot</h2>
                     <p className="text-gray-500">ama-waakye.tapngo.eth</p>
                   </div>
                 </div>

@@ -1,23 +1,16 @@
-"use client";
-
 import React from "react";
-import { useRouter } from "next/navigation";
-import { ChevronLeftIcon } from "@heroicons/react/20/solid";
+import BackArrow from "~~/components/BackArrow";
 
 const userOnBoarding = () => {
-  const router = useRouter();
-
   return (
     <>
-      {/* Mobile and Tablet Layout (sm and md screens) */}
-      <div className="">
-        <ChevronLeftIcon width={24} height={24} color="black" onClick={() => router.back()} />
-      </div>{" "}
+      <BackArrow />
+      {/* Mobile and Tablet Layout (sm and md screens) */}{" "}
       <div className="lg:hidden">
         <div className="flex flex-col gap-3">
           <div className="">
             <h1 className="font-bold text-2xl text-center">Create Your Account</h1>
-            <p className=" text-center">Join Ghana's fastest growing payment network</p>
+            <p className=" text-center">Join Ghana&aposs fastest growing payment network</p>
           </div>
 
           <div className="shadow-lg bg-white rounded-xl px-3 py-4 h-30 ">
@@ -59,7 +52,7 @@ const userOnBoarding = () => {
               type="text"
               name=""
               id="bname"
-              placeholder="Ama's Waakye Spot"
+              placeholder="Ama&aposs Waakye Spot"
             />
           </div>
 
@@ -69,7 +62,13 @@ const userOnBoarding = () => {
             </label>
             <div className="flex border-2 border-gray-200 rounded-xl overflow-hidden focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
               <div className="px-3 py-2">
-                <input className="placeholder:font-medium border-0 focus:ring-0 focus:outline-none" type="text" name="" id="" placeholder="ama-waakye" />
+                <input
+                  className="placeholder:font-medium border-0 focus:ring-0 focus:outline-none"
+                  type="text"
+                  name=""
+                  id=""
+                  placeholder="ama-waakye"
+                />
               </div>
               <span className="border-l-2 border-gray-200 text-gray-400 font-medium p-2 bg-gray-100">.tapn</span>
             </div>
@@ -97,7 +96,7 @@ const userOnBoarding = () => {
               {/* Header Section */}
               <div className="text-left mb-8">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">Create Your Account</h1>
-                <p className="text-lg text-gray-600">Join Ghana's fastest growing payment network</p>
+                <p className="text-lg text-gray-600">Join Ghana&aposs fastest growing payment network</p>
               </div>
 
               {/* Form */}
@@ -145,7 +144,7 @@ const userOnBoarding = () => {
                     type="text"
                     name="bname-lg"
                     id="bname-lg"
-                    placeholder="Ama's Waakye Spot"
+                    placeholder="Ama&aposs Waakye Spot"
                   />
                 </div>
 

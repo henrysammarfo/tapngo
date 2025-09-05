@@ -26,7 +26,7 @@ const Receipt = () => {
           <div className="space-y-4 mb-8">
             <div className="flex justify-between items-center py-3 border-b border-gray-100">
               <span className="text-gray-600 text-sm">To</span>
-              <span className="text-gray-900 font-medium">Ama's Waakye Spot</span>
+              <span className="text-gray-900 font-medium">Ama&apos;s Waakye Spot</span>
             </div>
             <div className="flex justify-between items-center py-3 border-b border-gray-100">
               <span className="text-gray-600 text-sm">Amount</span>
@@ -53,8 +53,8 @@ const Receipt = () => {
             <button className="w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 rounded-xl text-sm hover:bg-gray-50 transition-colors">
               Share Receipt
             </button>
-            <button 
-              onClick={() => router.push('/')}
+            <button
+              onClick={() => router.push("/")}
               className="w-full bg-gray-900 text-white font-medium py-4 rounded-xl text-base hover:bg-gray-800 transition-colors"
             >
               Done
@@ -85,7 +85,7 @@ const Receipt = () => {
                   <div className="space-y-6">
                     <div className="flex justify-between items-center py-4 border-b border-gray-100">
                       <span className="text-gray-600">To</span>
-                      <span className="text-gray-900 font-medium">Ama's Waakye Spot</span>
+                      <span className="text-gray-900 font-medium">Ama&apos;s Waakye Spot</span>
                     </div>
                     <div className="flex justify-between items-center py-4 border-b border-gray-100">
                       <span className="text-gray-600">Amount</span>
@@ -147,8 +147,8 @@ const Receipt = () => {
                 </div>
 
                 {/* Done Button */}
-                <button 
-                  onClick={() => router.push('/')}
+                <button
+                  onClick={() => router.push("/")}
                   className="w-full bg-gray-900 text-white font-semibold py-4 rounded-2xl text-lg shadow-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02]"
                 >
                   Done
