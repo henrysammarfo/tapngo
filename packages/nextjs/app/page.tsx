@@ -1,71 +1,90 @@
 "use client";
 
-import Link from "next/link";
-import type { NextPage } from "next";
-import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Address } from "~~/components/scaffold-eth";
+import { useEffect, useRef } from "react";
+import CustomLayout from "~~/components/CustomLayout";
+import PersistentDownArrow from "~~/components/PersistentDownArrow";
+import FeaturesSection from "~~/components/sections/FeaturesSection";
+import HowItWorksSection from "~~/components/sections/HowItWorks";
 
-const Home: NextPage = () => {
-  const { address: connectedAddress } = useAccount();
+export default function Home() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const playVideo = () => {
+      if (videoRef.current) {
+        videoRef.current.play().catch(error => {
+          console.error("Video play failed:", error);
+        });
+      }
+    };
+    playVideo();
+    const timer = setTimeout(playVideo, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <>
-      <div className="flex items-center flex-col grow pt-10">
-        <div className="px-5">
-          <h1 className="text-center">
-            <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
-          </h1>
-          <div className="flex justify-center items-center space-x-2 flex-col">
-            <p className="my-2 font-medium">Connected Address:</p>
-            <Address address={connectedAddress} />
+    <div className="relative">
+      {/* Video Background - FIXED POSITION with low z-index */}
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className="fixed top-0 left-0 w-full h-full object-cover z-0"
+        src="/hero-bg.mp4"
+      />
+
+      {/* Enhanced Gradient Overlay - Darker for better contrast */}
+      <div className="fixed top-0 left-0 w-full h-full bg-gradient-to-b from-black/40 via-black/20 to-black/40 z-1"></div>
+
+      <CustomLayout>
+        {/* Hero Section */}
+        <div className="relative h-screen overflow-hidden">
+          {/* Hero Content with Glassmorphic Design */}
+          <div className="relative z-10 flex flex-col items-center justify-center h-full text-center p-8">
+            {/* Logo with glass effect */}
+            <div className="w-24 h-24 bg-blue-100/80 dark:bg-blue-900/80 backdrop-blur-md rounded-2xl flex items-center justify-center mb-8 drop-shadow-lg border border-white/20">
+              <svg className="w-12 h-12 text-blue-600 dark:text-blue-300" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                <path
+                  fillRule="evenodd"
+                  d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+
+            {/* Main Headline with Glassmorphic Background */}
+            <div className="bg-black/30 backdrop-blur-md rounded-2xl p-8 mb-6 border border-white/10">
+              <h1 className="text-5xl md:text-7xl font-bold mb-4 text-white drop-shadow-2xl">Tap. Pay. Go.</h1>
+            </div>
+
+            {/* Subtitle with Glassmorphic Background */}
+            <div className="bg-black/25 backdrop-blur-md rounded-xl p-6 mb-10 border border-white/10 max-w-2xl">
+              <p className="text-xl md:text-2xl text-white drop-shadow-xl">The future of payments in Ghana.</p>
+            </div>
+
+            {/* Buttons with Glassmorphic Effects */}
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+              <button className="bg-blue-600/90 hover:bg-blue-700/90 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 drop-shadow-lg border border-blue-400/30">
+                Get Started &rarr;
+              </button>
+              <button className="bg-gray-800/80 hover:bg-gray-900/80 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 drop-shadow-lg border border-gray-400/20">
+                Learn More &gt;
+              </button>
+            </div>
           </div>
-          <p className="text-center text-lg">
-            Get started by editing{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
-            </code>
-          </p>
-          <p className="text-center text-lg">
-            Edit your smart contract{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              YourContract.sol
-            </code>{" "}
-            in{" "}
-            <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/hardhat/contracts
-            </code>
-          </p>
         </div>
 
-        <div className="grow bg-base-300 w-full mt-16 px-8 py-12">
-          <div className="flex justify-center items-center gap-12 flex-col md:flex-row">
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <BugAntIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Tinker with your smart contract using the{" "}
-                <Link href="/debug" passHref className="link">
-                  Debug Contracts
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-            <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-              <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-              <p>
-                Explore your local transactions with the{" "}
-                <Link href="/blockexplorer" passHref className="link">
-                  Block Explorer
-                </Link>{" "}
-                tab.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+        {/* Sections below with their own solid backgrounds */}
+        <FeaturesSection />
+        <HowItWorksSection />
+
+        {/* Persistent Down Arrow */}
+        <PersistentDownArrow />
+      </CustomLayout>
+    </div>
   );
-};
-
-export default Home;
+}
