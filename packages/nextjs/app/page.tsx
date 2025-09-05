@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import CustomLayout from "~~/components/CustomLayout";
 import PersistentDownArrow from "~~/components/PersistentDownArrow";
 import FeaturesSection from "~~/components/sections/FeaturesSection";
@@ -44,20 +45,13 @@ export default function Home() {
         <div className="relative h-screen overflow-hidden">
           {/* Hero Content with Glassmorphic Design */}
           <div className="relative z-10 flex flex-col items-center justify-center h-full text-center p-8">
-            {/* Logo with glass effect */}
-            <div className="w-24 h-24 bg-blue-100/80 dark:bg-blue-900/80 backdrop-blur-md rounded-2xl flex items-center justify-center mb-8 drop-shadow-lg border border-white/20">
-              <svg className="w-12 h-12 text-blue-600 dark:text-blue-300" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                <path
-                  fillRule="evenodd"
-                  d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                  clipRule="evenodd"
-                />
-              </svg>
+            {/* Logo with TRANSPARENT background (removed bg classes) */}
+            <div className="w-48 h-24 flex items-center justify-center mb-8 drop-shadow-lg">
+              <Image src="/app_logo.png" alt="TapNGo Pay" width={250} height={60} className="object-contain" priority />
             </div>
 
             {/* Main Headline with Glassmorphic Background */}
-            <div className="bg-black/30 backdrop-blur-md rounded-2xl p-8 mb-6 border border-white/10">
+            <div className="bg-black/25 backdrop-blur-md rounded-2xl p-8 mb-6 border border-white/10">
               <h1 className="text-5xl md:text-7xl font-bold mb-4 text-white drop-shadow-2xl">Tap. Pay. Go.</h1>
             </div>
 

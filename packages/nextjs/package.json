@@ -2,6 +2,7 @@
   "name": "@se-2/nextjs",
   "private": true,
   "version": "0.1.0",
+  "description": "Seamless NFC and QR-based cryptocurrency payments",
   "scripts": {
     "build": "next build",
     "check-types": "tsc --noEmit --incremental",

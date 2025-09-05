@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MoonIcon, SunIcon } from "./ThemeIcons";
 import { useTheme } from "next-themes";
@@ -61,17 +62,10 @@ export default function SmartHeader() {
     >
       {/* Logo */}
       <div className="flex items-center">
-        <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
-          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-            <path
-              fillRule="evenodd"
-              d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-              clipRule="evenodd"
-            />
-          </svg>
+        <div className="w-32 h-16 flex items-center justify-center mr-3">
+          <Image src="/app_logo.png" alt="TapNGo Pay" width={80} height={64} className="object-contain" />
         </div>
-        <h1 className={`text-2xl font-bold ${textColor}`}>Tap&Go Pay</h1>
+        <h1 className={`text-2xl font-bold ${textColor} drop-shadow-md`}>TapNGo Pay</h1>
       </div>
 
       {/* Desktop Navigation */}
