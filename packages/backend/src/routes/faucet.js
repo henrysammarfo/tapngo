@@ -4,8 +4,12 @@ import { BlockchainService } from '../services/blockchainService.js';
 import { authenticateToken, optionalAuth } from '../middleware/auth.js';
 import { validate, schemas } from '../middleware/validation.js';
 import rateLimit from 'express-rate-limit';
+import { ethers } from 'ethers';
 
 const router = express.Router();
+
+// Initialize provider
+const provider = new ethers.JsonRpcProvider(process.env.BASE_RPC_URL);
 
 // Rate limiting for faucet requests (1 request per hour per IP)
 const faucetLimiter = rateLimit({
@@ -45,7 +49,26 @@ router.post('/request', faucetLimiter, validate(schemas.faucetRequest), async (r
       }
     }
 
-    // Check wallet balance
+    // Check if user can claim from faucet
+    const faucetCheck = await BlockchainService.canClaimFaucet(wallet_address);
+    if (!faucetCheck.success) {
+      return res.status(500).json({
+        success: false,
+        error: { message: 'Failed to check faucet status' }
+      });
+    }
+
+    if (!faucetCheck.data.canClaim) {
+      return res.status(400).json({
+        success: false,
+        error: { 
+          message: `Faucet cooldown active. Try again in ${faucetCheck.data.timeUntilClaimFormatted}`,
+          time_until_claim: faucetCheck.data.timeUntilClaim
+        }
+      });
+    }
+
+    // Check wallet balance for gas
     const balanceResult = await BlockchainService.getBalance(wallet_address);
     if (!balanceResult.success) {
       return res.status(500).json({
@@ -66,9 +89,9 @@ router.post('/request', faucetLimiter, validate(schemas.faucetRequest), async (r
       });
     }
 
-    // Simulate faucet request (in production, this would interact with the actual contract)
+    // For now, return success without actually claiming (requires private key)
+    // In production, you would need the user's private key or use a relayer
     const faucetAmount = 1000; // 1000 bUSDC tokens
-    const txHash = `0x${Math.random().toString(16).substr(2, 64)}`; // Simulated transaction hash
 
     // Log faucet request
     console.log(`💰 Faucet request: ${wallet_address} requested ${faucetAmount} bUSDC`);
@@ -76,13 +99,13 @@ router.post('/request', faucetLimiter, validate(schemas.faucetRequest), async (r
     res.json({
       success: true,
       data: {
-        message: 'Faucet request submitted successfully',
+        message: 'Faucet request submitted successfully. Please claim from the contract directly.',
         wallet_address,
         amount: faucetAmount,
         token: 'bUSDC',
-        tx_hash: txHash,
-        status: 'pending',
-        estimated_time: '2-5 minutes'
+        contract_address: '0xeb9361Ec0d712C5B12965FB91c409262b7d6703c',
+        status: 'ready_to_claim',
+        instructions: 'Call claimFaucet() on the bUSDC contract with your wallet'
       }
     });
   } catch (error) {
@@ -117,18 +140,19 @@ router.get('/status/:walletAddress', optionalAuth, async (req, res) => {
       });
     }
 
-    // Get bUSDC balance (this would be a real contract call in production)
-    const busdcBalance = 0; // Simulated bUSDC balance
+    // Get bUSDC balance from contract
+    const tokenBalance = await BlockchainService.getTokenBalance(walletAddress);
+    const faucetStatus = await BlockchainService.canClaimFaucet(walletAddress);
 
     res.json({
       success: true,
       data: {
         wallet_address: walletAddress,
         eth_balance: balanceResult.data.balanceFormatted,
-        busdc_balance: `${busdcBalance} bUSDC`,
-        can_request: balanceResult.data.balanceEth >= 0.001,
-        last_request: null, // Would track last request time
-        next_request_available: null // Would calculate next available time
+        busdc_balance: tokenBalance.success ? tokenBalance.data.balanceFormatted : '0.0',
+        can_request: faucetStatus.success ? faucetStatus.data.canClaim : false,
+        faucet_cooldown: faucetStatus.success ? faucetStatus.data.timeUntilClaimFormatted : 'Unknown',
+        contract_address: '0xeb9361Ec0d712C5B12965FB91c409262b7d6703c'
       }
     });
   } catch (error) {
@@ -141,28 +165,52 @@ router.get('/status/:walletAddress', optionalAuth, async (req, res) => {
 });
 
 // Get faucet information
-router.get('/info', (req, res) => {
-  res.json({
-    success: true,
-    data: {
-      token: 'bUSDC',
-      amount_per_request: 1000,
-      cooldown_period: '1 hour',
-      requirements: {
-        min_eth_balance: '0.001 ETH',
-        description: 'Minimum ETH balance required for gas fees'
-      },
-      limits: {
-        per_ip: '1 request per hour',
-        per_wallet: '1 request per hour'
-      },
-      network: {
-        name: 'Base Sepolia',
-        chain_id: 84532,
-        rpc_url: process.env.BASE_RPC_URL
+router.get('/info', async (req, res) => {
+  try {
+    // Get contract information
+    const contract = new ethers.Contract(
+      '0xeb9361Ec0d712C5B12965FB91c409262b7d6703c',
+      ['function FAUCET_AMOUNT() view returns (uint256)', 'function FAUCET_COOLDOWN() view returns (uint256)', 'function name() view returns (string)', 'function symbol() view returns (string)'],
+      provider
+    );
+
+    const [faucetAmount, cooldown, tokenName, tokenSymbol] = await Promise.all([
+      contract.FAUCET_AMOUNT(),
+      contract.FAUCET_COOLDOWN(),
+      contract.name(),
+      contract.symbol()
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        token: tokenSymbol,
+        token_name: tokenName,
+        amount_per_request: ethers.formatUnits(faucetAmount, 6),
+        cooldown_period: `${Number(cooldown) / 3600} hours`,
+        requirements: {
+          min_eth_balance: '0.001 ETH',
+          description: 'Minimum ETH balance required for gas fees'
+        },
+        limits: {
+          per_ip: '1 request per hour',
+          per_wallet: '1 request per hour'
+        },
+        network: {
+          name: 'Base Sepolia',
+          chain_id: 84532,
+          rpc_url: process.env.BASE_RPC_URL
+        },
+        contract_address: '0xeb9361Ec0d712C5B12965FB91c409262b7d6703c'
       }
-    }
-  });
+    });
+  } catch (error) {
+    console.error('Faucet info error:', error);
+    res.status(500).json({
+      success: false,
+      error: { message: 'Failed to fetch faucet information' }
+    });
+  }
 });
 
 // Get faucet statistics (admin only)
