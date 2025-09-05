@@ -3,6 +3,7 @@ import User from './User.js';
 import Vendor from './Vendor.js';
 import Transaction from './Transaction.js';
 import OTP from './OTP.js';
+import Menu from './Menu.js';
 
 // Define associations
 User.hasOne(Vendor, {
@@ -35,10 +36,21 @@ Transaction.belongsTo(Vendor, {
   as: 'vendor'
 });
 
+Vendor.hasMany(Menu, {
+  foreignKey: 'vendor_id',
+  as: 'menuItems'
+});
+
+Menu.belongsTo(Vendor, {
+  foreignKey: 'vendor_id',
+  as: 'vendor'
+});
+
 export {
   sequelize,
   User,
   Vendor,
   Transaction,
-  OTP
+  OTP,
+  Menu
 };

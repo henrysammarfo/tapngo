@@ -95,5 +95,16 @@ export const schemas = {
   // Faucet request
   faucetRequest: Joi.object({
     wallet_address: Joi.string().pattern(/^0x[a-fA-F0-9]{40}$/).required()
+  }),
+
+  // Menu item
+  menuItem: Joi.object({
+    item_id: Joi.string().max(50).required(),
+    name: Joi.string().max(255).required(),
+    description: Joi.string().max(1000).optional(),
+    price_ghs: Joi.number().positive().required(),
+    category: Joi.string().max(100).optional(),
+    image_url: Joi.string().uri().optional(),
+    sort_order: Joi.number().integer().min(0).optional()
   })
 };

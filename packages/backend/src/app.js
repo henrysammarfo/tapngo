@@ -12,6 +12,7 @@ import vendorRoutes from './routes/vendor.js';
 import profileRoutes from './routes/profile.js';
 import transactionRoutes from './routes/transaction.js';
 import faucetRoutes from './routes/faucet.js';
+import menuRoutes from './routes/menu.js';
 import { syncDatabase } from './utils/databaseSync.js';
 
 // Load environment variables
@@ -61,6 +62,7 @@ app.use('/api/vendor', vendorRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/faucet', faucetRoutes);
+app.use('/api/menu', menuRoutes);
 
 // Error handling middleware
 app.use(notFound);
