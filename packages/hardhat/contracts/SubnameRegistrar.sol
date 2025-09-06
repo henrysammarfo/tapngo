@@ -5,8 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "./VendorRegistry.sol";
 
-// ENS Registry interface (simplified for Base Sepolia)
-// In a real implementation, you would import the actual ENS interfaces
+// Real ENS Registry interface (Sepolia)
 interface ENSRegistry {
     function setSubnodeRecord(
         bytes32 node,
@@ -17,18 +16,23 @@ interface ENSRegistry {
     ) external;
     
     function setResolver(bytes32 node, address resolver) external;
-    function setAddr(bytes32 node, address a) external;
+    function setOwner(bytes32 node, address owner) external;
+    function owner(bytes32 node) external view returns (address);
+    function resolver(bytes32 node) external view returns (address);
 }
 
-// ENS Resolver interface (simplified)
+// Real ENS Resolver interface (Sepolia)
 interface ENSResolver {
     function setAddr(bytes32 node, address a) external;
     function setText(bytes32 node, string calldata key, string calldata value) external;
+    function addr(bytes32 node) external view returns (address);
+    function text(bytes32 node, string calldata key) external view returns (string memory);
 }
 
 /**
  * @title SubnameRegistrar
  * @dev Manages ENS subnames under .tapngo.eth for verified vendors
+ * Integrates with real Sepolia ENS registry for cross-chain resolution
  * This contract issues subnames only to vendors registered in VendorRegistry
  */
 contract SubnameRegistrar is Ownable, Pausable {
@@ -38,8 +42,13 @@ contract SubnameRegistrar is Ownable, Pausable {
     ENSRegistry public ensRegistry;
     ENSResolver public ensResolver;
     
-    // ENS node for .tapngo.eth (this would be the actual node hash in production)
-    bytes32 public constant TAPNGO_NODE = keccak256(abi.encodePacked(bytes32(0), keccak256("tapngo")));
+    // ENS node for .tapngo.eth (real namehash for tapngo.eth on Sepolia)
+    // This will be set when tapngo.eth is owned on Sepolia
+    bytes32 public tapngoNode;
+    
+    // Sepolia ENS Registry and Resolver addresses
+    address public constant SEPOLIA_ENS_REGISTRY = 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e;
+    address public constant SEPOLIA_PUBLIC_RESOLVER = 0x231b0Ee14048e9dCcD1d247744d114a4EB5E8E63;
     
     // Mapping to track registered subnames
     mapping(string => address) public subnameToOwner; // subname -> owner address
@@ -88,13 +97,12 @@ contract SubnameRegistrar is Ownable, Pausable {
     }
     
     constructor(
-        address _vendorRegistry,
-        address _ensRegistry,
-        address _ensResolver
+        address _vendorRegistry
     ) Ownable(msg.sender) {
         vendorRegistry = VendorRegistry(_vendorRegistry);
-        ensRegistry = ENSRegistry(_ensRegistry);
-        ensResolver = ENSResolver(_ensResolver);
+        ensRegistry = ENSRegistry(SEPOLIA_ENS_REGISTRY);
+        ensResolver = ENSResolver(SEPOLIA_PUBLIC_RESOLVER);
+        // tapngoNode will be set when tapngo.eth is owned
     }
     
     /**
@@ -105,6 +113,7 @@ contract SubnameRegistrar is Ownable, Pausable {
         require(bytes(subname).length > 0, "SubnameRegistrar: Subname cannot be empty");
         require(!subnameExists[subname], "SubnameRegistrar: Subname already exists");
         require(msg.value >= registrationFee, "SubnameRegistrar: Insufficient registration fee");
+        require(tapngoNode != bytes32(0), "SubnameRegistrar: tapngo.eth node not set");
         
         // Get vendor profile to verify ENS name matches
         VendorRegistry.VendorProfile memory profile = vendorRegistry.getVendorProfile(msg.sender);
@@ -122,10 +131,10 @@ contract SubnameRegistrar is Ownable, Pausable {
         subnameExists[subname] = true;
         ownerToSubnames[msg.sender].push(subname);
         
-        // Register with ENS (simplified - in production you'd use actual ENS contracts)
+        // Register with real Sepolia ENS
         bytes32 label = keccak256(bytes(subname));
         ensRegistry.setSubnodeRecord(
-            TAPNGO_NODE,
+            tapngoNode,
             label,
             msg.sender,
             address(ensResolver),
@@ -133,7 +142,7 @@ contract SubnameRegistrar is Ownable, Pausable {
         );
         
         // Set the address resolution
-        bytes32 node = keccak256(abi.encodePacked(TAPNGO_NODE, label));
+        bytes32 node = keccak256(abi.encodePacked(tapngoNode, label));
         ensResolver.setAddr(node, msg.sender);
         
         // Set text records for additional metadata
@@ -161,9 +170,9 @@ contract SubnameRegistrar is Ownable, Pausable {
         
         // Update ENS record
         bytes32 label = keccak256(bytes(subname));
-        bytes32 node = keccak256(abi.encodePacked(TAPNGO_NODE, label));
+        bytes32 node = keccak256(abi.encodePacked(tapngoNode, label));
         ensRegistry.setSubnodeRecord(
-            TAPNGO_NODE,
+            tapngoNode,
             label,
             newOwner,
             address(ensResolver),
@@ -191,7 +200,7 @@ contract SubnameRegistrar is Ownable, Pausable {
         // Clear ENS record (set owner to zero address)
         bytes32 label = keccak256(bytes(subname));
         ensRegistry.setSubnodeRecord(
-            TAPNGO_NODE,
+            tapngoNode,
             label,
             address(0),
             address(0),
@@ -199,6 +208,15 @@ contract SubnameRegistrar is Ownable, Pausable {
         );
         
         emit SubnameRevoked(subname, owner);
+    }
+    
+    /**
+     * @dev Set the tapngo.eth node (admin only)
+     * @param _tapngoNode The namehash of tapngo.eth
+     */
+    function setTapngoNode(bytes32 _tapngoNode) external onlyAdmin {
+        require(_tapngoNode != bytes32(0), "SubnameRegistrar: Invalid node");
+        tapngoNode = _tapngoNode;
     }
     
     /**

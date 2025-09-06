@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import CustomLayout from "~~/components/CustomLayout";
 import PersistentDownArrow from "~~/components/PersistentDownArrow";
 import DemoSection from "~~/components/sections/DemoSection";
@@ -10,6 +11,7 @@ import HowItWorksSection from "~~/components/sections/HowItWorks";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const playVideo = () => {
@@ -33,9 +35,10 @@ export default function Home() {
         loop
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         className="fixed top-0 left-0 w-full h-full object-cover z-0"
         src="/hero-bg.mp4"
+        poster="/thumbnail.jpg"
       />
 
       {/* Enhanced Gradient Overlay - Darker for better contrast */}
@@ -63,12 +66,18 @@ export default function Home() {
 
             {/* Buttons with Glassmorphic Effects */}
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
-              <button className="bg-blue-600/90 hover:bg-blue-700/90 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 drop-shadow-lg border border-blue-400/30">
+              <a 
+                href="/sign-up"
+                className="bg-blue-600/90 hover:bg-blue-700/90 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 drop-shadow-lg border border-blue-400/30 text-center"
+              >
                 Get Started &rarr;
-              </button>
-              <button className="bg-gray-800/80 hover:bg-gray-900/80 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 drop-shadow-lg border border-gray-400/20">
-                Learn More &gt;
-              </button>
+              </a>
+              <a 
+                href="/sign-in"
+                className="bg-gray-800/80 hover:bg-gray-900/80 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 drop-shadow-lg border border-gray-400/20 text-center"
+              >
+                Sign In &gt;
+              </a>
             </div>
           </div>
         </div>

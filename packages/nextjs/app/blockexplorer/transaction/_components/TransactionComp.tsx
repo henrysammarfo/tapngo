@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { Hash, Transaction, TransactionReceipt, formatEther, formatUnits } from "viem";
 import { hardhat } from "viem/chains";

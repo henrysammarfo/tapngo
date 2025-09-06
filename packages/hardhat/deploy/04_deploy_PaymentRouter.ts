@@ -15,12 +15,14 @@ const deployPaymentRouter: DeployFunction = async function (hre: HardhatRuntimeE
   // Get the required contract addresses
   const busdc = await hre.deployments.get("bUSDC");
   const vendorRegistry = await hre.deployments.get("VendorRegistry");
+  const subnameRegistrar = await hre.deployments.get("SubnameRegistrar");
 
   await deploy("PaymentRouter", {
     from: deployer,
     args: [
       busdc.address,
       vendorRegistry.address,
+      subnameRegistrar.address,
       deployer, // Fee recipient (deployer for now)
     ],
     log: true,
@@ -33,6 +35,7 @@ const deployPaymentRouter: DeployFunction = async function (hre: HardhatRuntimeE
   console.log("✅ PaymentRouter deployed at:", await paymentRouter.getAddress());
   console.log("🪙 bUSDC Token:", await paymentRouter.busdcToken());
   console.log("🏪 VendorRegistry:", await paymentRouter.vendorRegistry());
+  console.log("📝 SubnameRegistrar:", await paymentRouter.subnameRegistrar());
   console.log("💰 Fee recipient:", await paymentRouter.feeRecipient());
   console.log("💱 Exchange rate:", await paymentRouter.currentFxRate());
   console.log("📊 Platform fee (bps):", await paymentRouter.platformFeeBps());
@@ -41,4 +44,4 @@ const deployPaymentRouter: DeployFunction = async function (hre: HardhatRuntimeE
 
 export default deployPaymentRouter;
 deployPaymentRouter.tags = ["PaymentRouter", "payments"];
-deployPaymentRouter.dependencies = ["bUSDC", "VendorRegistry"];
+deployPaymentRouter.dependencies = ["bUSDC", "VendorRegistry", "SubnameRegistrar"];

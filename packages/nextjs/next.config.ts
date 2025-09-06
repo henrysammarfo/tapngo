@@ -9,9 +9,24 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: process.env.NEXT_PUBLIC_IGNORE_BUILD_ERROR === "true",
   },
+  // Performance optimizations
+  experimental: {
+    optimizePackageImports: ['@heroicons/react', '@rainbow-me/rainbowkit'],
+  },
+  // Image optimization
+  images: {
+    formats: ['image/webp', 'image/avif'],
+  },
   webpack: config => {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     config.externals.push("pino-pretty", "lokijs", "encoding");
+    
+    // Fix for exports is not defined error
+    config.output = {
+      ...config.output,
+      globalObject: 'this',
+    };
+    
     return config;
   },
 };

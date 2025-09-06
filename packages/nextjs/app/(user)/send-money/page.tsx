@@ -1,12 +1,168 @@
 "use client";
 
-import React, { useState } from "react";
-import { CheckIcon } from "@heroicons/react/20/solid";
+import React, { useState, useEffect } from "react";
+import { CheckIcon, UserPlusIcon, QrCodeIcon } from "@heroicons/react/20/solid";
+import { useRouter } from "next/navigation";
 import BackArrow from "~~/components/BackArrow";
+import { useUser } from '@clerk/nextjs';
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { useWalletUser } from '~~/hooks/useWalletUser';
+import { useNFC } from '~~/hooks/useNFC';
+import QRScanner from '~~/components/QRScanner';
+import { p2pService, P2PTransfer } from '~~/services/p2pService';
+import { qrService } from '~~/services/qrService';
+import { parseUnits } from 'viem';
 
 const SendMoney = () => {
+  const router = useRouter();
+  const { user, isLoaded } = useUser();
+  const { walletAddress, isWalletLinked } = useWalletUser();
+  
   const [selectedAmount, setSelectedAmount] = useState("₵50");
-  //  const [transferComplete, setTransferComplete] = useState(false);
+  const [recipientAddress, setRecipientAddress] = useState("");
+  const [recipientName, setRecipientName] = useState("");
+  const [message, setMessage] = useState("");
+  const [transferComplete, setTransferComplete] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showScanner, setShowScanner] = useState(false);
+  const [showContacts, setShowContacts] = useState(false);
+  const [contacts, setContacts] = useState<any[]>([]);
+
+  // Get user's bUSDC balance
+  const { data: busdcBalance } = useScaffoldReadContract({
+    contractName: "bUSDC",
+    functionName: "balanceOf",
+    args: [walletAddress],
+  });
+
+  // Smart contract integration
+  const { writeContractAsync: writeBusdcAsync } = useScaffoldWriteContract({
+    contractName: "bUSDC"
+  });
+
+  // NFC functionality
+  const { 
+    isSupported: nfcSupported, 
+    isReading, 
+    startReading, 
+    stopReading, 
+    writeMessage,
+    error: nfcError 
+  } = useNFC({
+    onPaymentRequest: (data) => {
+      const transferData = p2pService.parseNFCTransferData(data);
+      if (transferData && p2pService.isNFCTransferDataFresh(transferData)) {
+        setRecipientAddress(transferData.senderAddress);
+        setSelectedAmount(`₵${transferData.amountGHS}`);
+        setMessage(transferData.message);
+      }
+    }
+  });
+
+  useEffect(() => {
+    const loadContacts = async () => {
+      try {
+        const userContacts = await p2pService.getContacts();
+        setContacts(userContacts);
+      } catch (err) {
+        console.error('Error loading contacts:', err);
+      }
+    };
+
+    if (isLoaded && isWalletLinked) {
+      loadContacts();
+    }
+  }, [isLoaded, isWalletLinked]);
+
+  const handleTransfer = async () => {
+    if (!recipientAddress || !selectedAmount) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const amount = parseFloat(selectedAmount.replace('₵', ''));
+      const amountWei = parseUnits(amount.toString(), 6); // bUSDC has 6 decimals
+
+      // Check balance
+      if (busdcBalance && busdcBalance < amountWei) {
+        throw new Error("Insufficient balance");
+      }
+
+      // Execute transfer
+      await writeBusdcAsync({
+        functionName: "transfer",
+        args: [recipientAddress, amountWei],
+      });
+
+      // Create transfer record
+      const transfer: P2PTransfer = {
+        id: Date.now().toString(),
+        fromAddress: walletAddress,
+        toAddress: recipientAddress,
+        amount: amount,
+        amountWei: amountWei.toString(),
+        message: message,
+        timestamp: Date.now(),
+        status: 'completed',
+        type: 'send'
+      };
+
+      // Save to local storage
+      await p2pService.saveTransfer(transfer);
+
+      // Add to contacts if not exists
+      await p2pService.addContact({
+        address: recipientAddress,
+        name: recipientName || `Contact ${recipientAddress.slice(0, 6)}...`,
+        lastTransaction: Date.now()
+      });
+
+      setTransferComplete(true);
+    } catch (err: any) {
+      setError(err.message || "Transfer failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleQRScan = (data: string) => {
+    try {
+      const qrData = qrService.parsePaymentQR(data);
+      if (qrData.type === 'payment_request') {
+        setRecipientAddress(qrData.recipientAddress);
+        setSelectedAmount(`₵${qrData.amountGHS}`);
+        setMessage(qrData.message || "");
+      }
+      setShowScanner(false);
+    } catch (err) {
+      setError("Invalid QR code");
+      setShowScanner(false);
+    }
+  };
+
+  const handleContactSelect = (contact: any) => {
+    setRecipientAddress(contact.address);
+    setRecipientName(contact.name);
+    setShowContacts(false);
+  };
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    router.push('/sign-in');
+    return null;
+  }
 
   const quickAmounts = ["₵10", "₵25", "₵50"];
 
@@ -209,6 +365,63 @@ const SendMoney = () => {
           </div>
         </div>
       </div>
+
+      {/* QR Scanner Modal */}
+      {showScanner && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Scan QR Code</h3>
+              <button
+                onClick={() => setShowScanner(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <QRScanner onScan={handleQRScan} />
+          </div>
+        </div>
+      )}
+
+      {/* Contacts Modal */}
+      {showContacts && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 max-h-96 overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Select Contact</h3>
+              <button
+                onClick={() => setShowContacts(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="space-y-2">
+              {contacts.length > 0 ? (
+                contacts.map((contact) => (
+                  <button
+                    key={contact.address}
+                    onClick={() => handleContactSelect(contact)}
+                    className="w-full p-3 text-left hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  >
+                    <div className="font-medium text-gray-900 dark:text-white">{contact.name}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {contact.address.slice(0, 6)}...{contact.address.slice(-4)}
+                    </div>
+                  </button>
+                ))
+              ) : (
+                <p className="text-gray-500 dark:text-gray-400 text-center py-4">No contacts found</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -15,14 +15,9 @@ const deploySubnameRegistrar: DeployFunction = async function (hre: HardhatRunti
   // Get the VendorRegistry address
   const vendorRegistry = await hre.deployments.get("VendorRegistry");
 
-  // For Base Sepolia, we'll use placeholder addresses for ENS contracts
-  // In production, these would be the actual ENS contract addresses
-  const ENS_REGISTRY_PLACEHOLDER = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"; // Mainnet ENS Registry
-  const ENS_RESOLVER_PLACEHOLDER = "0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41"; // Mainnet Public Resolver
-
   await deploy("SubnameRegistrar", {
     from: deployer,
-    args: [vendorRegistry.address, ENS_REGISTRY_PLACEHOLDER, ENS_RESOLVER_PLACEHOLDER],
+    args: [vendorRegistry.address],
     log: true,
     autoMine: true,
   });
@@ -35,7 +30,7 @@ const deploySubnameRegistrar: DeployFunction = async function (hre: HardhatRunti
   console.log("🔗 ENS Registry:", await subnameRegistrar.ensRegistry());
   console.log("🔗 ENS Resolver:", await subnameRegistrar.ensResolver());
   console.log("💰 Registration fee:", await subnameRegistrar.registrationFee());
-  console.log("🌐 TAPNGO Node:", await subnameRegistrar.TAPNGO_NODE());
+  console.log("🌐 TAPNGO Node:", await subnameRegistrar.tapngoNode());
 };
 
 export default deploySubnameRegistrar;

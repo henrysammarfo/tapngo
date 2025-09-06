@@ -3,9 +3,24 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { CheckIcon } from "@heroicons/react/20/solid";
+import { useUser } from '@clerk/nextjs';
 
 const Receipt = () => {
   const router = useRouter();
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    router.push('/sign-in');
+    return null;
+  }
 
   return (
     <>

@@ -6,18 +6,21 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./bUSDC.sol";
 import "./VendorRegistry.sol";
+import "./SubnameRegistrar.sol";
 
 /**
  * @title PaymentRouter
- * @dev Handles bUSDC payments between buyers and vendors
- * Supports Quick Pay (amount only) and Invoice Pay (with metadata)
+ * @dev Handles bUSDC payments between users (P2P) and vendors
+ * Supports P2P transfers, vendor payments, ENS resolution, QR/NFC payments
  * Emits Receipt events for transaction tracking
  */
 contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
     // Payment types
     enum PaymentType {
-        QuickPay,    // 0 - Simple amount-only payment
-        InvoicePay   // 1 - Payment with invoice metadata
+        P2P,         // 0 - Peer-to-peer transfer
+        VendorPay,   // 1 - Payment to vendor
+        QRPay,       // 2 - QR code payment
+        NFCPay       // 3 - NFC tap payment
     }
     
     // Payment status
@@ -31,9 +34,9 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
     // Receipt structure for on-chain payment records
     struct Receipt {
         bytes32 orderId;           // Unique order identifier
-        string vendorENS;          // Vendor's ENS name
-        address buyer;             // Buyer's address
-        address vendor;            // Vendor's address
+        string recipientENS;       // Recipient's ENS name (vendor or user)
+        address sender;            // Sender's address
+        address recipient;         // Recipient's address
         uint256 amountGHS;         // Amount in GHS (for display)
         uint256 amountUSDC;        // Amount in bUSDC (actual payment)
         uint256 fxRate;            // Exchange rate used (GHS to USDC)
@@ -41,11 +44,13 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
         PaymentType paymentType;   // Type of payment
         PaymentStatus status;      // Payment status
         string metadata;           // Additional metadata (JSON string)
+        bool isVendorPayment;      // Whether recipient is a vendor
     }
     
     // State variables
     bUSDC public busdcToken;
     VendorRegistry public vendorRegistry;
+    SubnameRegistrar public subnameRegistrar;
     
     // Exchange rate management
     uint256 public currentFxRate = 1e6; // 1 GHS = 1 USDC (6 decimals) - default rate
@@ -59,6 +64,7 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
     mapping(bytes32 => Receipt) public receipts; // orderId -> Receipt
     mapping(address => bytes32[]) public userReceipts; // user -> array of orderIds
     mapping(address => uint256) public vendorEarnings; // vendor -> total earnings
+    mapping(address => uint256) public userEarnings; // user -> total P2P earnings
     
     // Order ID generation
     uint256 private orderCounter = 0;
@@ -66,32 +72,32 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
     // Events
     event PaymentInitiated(
         bytes32 indexed orderId,
-        address indexed buyer,
-        address indexed vendor,
+        address indexed sender,
+        address indexed recipient,
         uint256 amountUSDC,
         PaymentType paymentType
     );
     
     event PaymentCompleted(
         bytes32 indexed orderId,
-        address indexed buyer,
-        address indexed vendor,
+        address indexed sender,
+        address indexed recipient,
         uint256 amountUSDC,
         uint256 platformFee,
-        uint256 vendorAmount
+        uint256 recipientAmount
     );
     
     event PaymentFailed(
         bytes32 indexed orderId,
-        address indexed buyer,
-        address indexed vendor,
+        address indexed sender,
+        address indexed recipient,
         string reason
     );
     
     event PaymentRefunded(
         bytes32 indexed orderId,
-        address indexed buyer,
-        address indexed vendor,
+        address indexed sender,
+        address indexed recipient,
         uint256 amountUSDC
     );
     
@@ -102,6 +108,12 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
     // Modifiers
     modifier onlyActiveVendor(address vendor) {
         require(vendorRegistry.isActiveVendor(vendor), "PaymentRouter: Vendor not active");
+        _;
+    }
+    
+    modifier validRecipient(address recipient) {
+        require(recipient != address(0), "PaymentRouter: Invalid recipient address");
+        require(recipient != msg.sender, "PaymentRouter: Cannot send to self");
         _;
     }
     
@@ -118,24 +130,28 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
     constructor(
         address _busdcToken,
         address _vendorRegistry,
+        address _subnameRegistrar,
         address _feeRecipient
     ) Ownable(msg.sender) {
         busdcToken = bUSDC(_busdcToken);
         vendorRegistry = VendorRegistry(_vendorRegistry);
+        subnameRegistrar = SubnameRegistrar(payable(_subnameRegistrar));
         feeRecipient = _feeRecipient;
         fxRateUpdater = msg.sender;
     }
     
     /**
-     * @dev Initiate a Quick Pay transaction
-     * @param vendor Vendor's address
+     * @dev Send P2P payment to any address
+     * @param recipient Recipient's address
      * @param amountGHS Amount in GHS
+     * @param metadata Optional metadata
      * @return orderId Generated order ID
      */
-    function initiateQuickPay(
-        address vendor,
-        uint256 amountGHS
-    ) external onlyActiveVendor(vendor) whenNotPaused returns (bytes32 orderId) {
+    function sendP2PPayment(
+        address recipient,
+        uint256 amountGHS,
+        string memory metadata
+    ) external validRecipient(recipient) whenNotPaused returns (bytes32 orderId) {
         uint256 amountUSDC = (amountGHS * currentFxRate) / 1e6;
         require(amountUSDC > 0, "PaymentRouter: Amount too small");
         
@@ -144,63 +160,69 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
         // Create receipt
         receipts[orderId] = Receipt({
             orderId: orderId,
-            vendorENS: _getVendorENS(vendor),
-            buyer: msg.sender,
-            vendor: vendor,
+            recipientENS: _getRecipientENS(recipient),
+            sender: msg.sender,
+            recipient: recipient,
             amountGHS: amountGHS,
             amountUSDC: amountUSDC,
             fxRate: currentFxRate,
             timestamp: block.timestamp,
-            paymentType: PaymentType.QuickPay,
+            paymentType: PaymentType.P2P,
             status: PaymentStatus.Pending,
-            metadata: ""
+            metadata: metadata,
+            isVendorPayment: vendorRegistry.isVendor(recipient)
         });
         
         userReceipts[msg.sender].push(orderId);
-        userReceipts[vendor].push(orderId);
+        userReceipts[recipient].push(orderId);
         
-        emit PaymentInitiated(orderId, msg.sender, vendor, amountUSDC, PaymentType.QuickPay);
+        emit PaymentInitiated(orderId, msg.sender, recipient, amountUSDC, PaymentType.P2P);
         
         return orderId;
     }
     
     /**
-     * @dev Initiate an Invoice Pay transaction with metadata
+     * @dev Send payment to vendor (with QR/NFC support)
      * @param vendor Vendor's address
      * @param amountGHS Amount in GHS
-     * @param metadata JSON string with invoice details
+     * @param metadata JSON string with payment details
+     * @param paymentType QR or NFC payment type
      * @return orderId Generated order ID
      */
-    function initiateInvoicePay(
+    function sendVendorPayment(
         address vendor,
         uint256 amountGHS,
-        string memory metadata
+        string memory metadata,
+        PaymentType paymentType
     ) external onlyActiveVendor(vendor) whenNotPaused returns (bytes32 orderId) {
+        require(paymentType == PaymentType.QRPay || paymentType == PaymentType.VendorPay, 
+                "PaymentRouter: Invalid payment type for vendor");
+        
         uint256 amountUSDC = (amountGHS * currentFxRate) / 1e6;
         require(amountUSDC > 0, "PaymentRouter: Amount too small");
-        require(bytes(metadata).length > 0, "PaymentRouter: Metadata cannot be empty");
         
         orderId = _generateOrderId();
         
         // Create receipt
         receipts[orderId] = Receipt({
             orderId: orderId,
-            vendorENS: _getVendorENS(vendor),
-            buyer: msg.sender,
-            vendor: vendor,
+            recipientENS: _getVendorENS(vendor),
+            sender: msg.sender,
+            recipient: vendor,
             amountGHS: amountGHS,
             amountUSDC: amountUSDC,
             fxRate: currentFxRate,
             timestamp: block.timestamp,
-            paymentType: PaymentType.InvoicePay,
+            paymentType: paymentType,
             status: PaymentStatus.Pending,
-            metadata: metadata
+            metadata: metadata,
+            isVendorPayment: true
         });
         
         userReceipts[msg.sender].push(orderId);
         userReceipts[vendor].push(orderId);
         
-        emit PaymentInitiated(orderId, msg.sender, vendor, amountUSDC, PaymentType.InvoicePay);
+        emit PaymentInitiated(orderId, msg.sender, vendor, amountUSDC, paymentType);
         
         return orderId;
     }
@@ -212,17 +234,22 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
     function completePayment(bytes32 orderId) external nonReentrant validOrderId(orderId) {
         Receipt storage receipt = receipts[orderId];
         require(receipt.status == PaymentStatus.Pending, "PaymentRouter: Payment not pending");
-        require(receipt.buyer == msg.sender, "PaymentRouter: Only buyer can complete payment");
+        require(receipt.sender == msg.sender, "PaymentRouter: Only sender can complete payment");
         
-        // Check buyer has sufficient balance
+        // Check sender has sufficient balance
         require(
             busdcToken.balanceOf(msg.sender) >= receipt.amountUSDC,
             "PaymentRouter: Insufficient bUSDC balance"
         );
         
-        // Calculate fees
-        uint256 platformFee = (receipt.amountUSDC * platformFeeBps) / 10000;
-        uint256 vendorAmount = receipt.amountUSDC - platformFee;
+        // Calculate fees (only for vendor payments)
+        uint256 platformFee = 0;
+        uint256 recipientAmount = receipt.amountUSDC;
+        
+        if (receipt.isVendorPayment) {
+            platformFee = (receipt.amountUSDC * platformFeeBps) / 10000;
+            recipientAmount = receipt.amountUSDC - platformFee;
+        }
         
         // Transfer tokens
         require(
@@ -239,19 +266,24 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
         }
         
         require(
-            busdcToken.transfer(receipt.vendor, vendorAmount),
-            "PaymentRouter: Vendor transfer failed"
+            busdcToken.transfer(receipt.recipient, recipientAmount),
+            "PaymentRouter: Recipient transfer failed"
         );
         
-        // Update receipt and vendor earnings
+        // Update receipt and earnings
         receipt.status = PaymentStatus.Completed;
-        vendorEarnings[receipt.vendor] += vendorAmount;
         
-        emit PaymentCompleted(orderId, receipt.buyer, receipt.vendor, receipt.amountUSDC, platformFee, vendorAmount);
+        if (receipt.isVendorPayment) {
+            vendorEarnings[receipt.recipient] += recipientAmount;
+        } else {
+            userEarnings[receipt.recipient] += recipientAmount;
+        }
+        
+        emit PaymentCompleted(orderId, receipt.sender, receipt.recipient, receipt.amountUSDC, platformFee, recipientAmount);
     }
     
     /**
-     * @dev Mark a payment as failed (admin or vendor only)
+     * @dev Mark a payment as failed (admin or recipient only)
      * @param orderId Order ID to mark as failed
      * @param reason Reason for failure
      */
@@ -259,13 +291,13 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
         Receipt storage receipt = receipts[orderId];
         require(receipt.status == PaymentStatus.Pending, "PaymentRouter: Payment not pending");
         require(
-            msg.sender == receipt.vendor || msg.sender == owner(),
-            "PaymentRouter: Only vendor or admin can mark as failed"
+            msg.sender == receipt.recipient || msg.sender == owner(),
+            "PaymentRouter: Only recipient or admin can mark as failed"
         );
         
         receipt.status = PaymentStatus.Failed;
         
-        emit PaymentFailed(orderId, receipt.buyer, receipt.vendor, reason);
+        emit PaymentFailed(orderId, receipt.sender, receipt.recipient, reason);
     }
     
     /**
@@ -279,17 +311,22 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
         // Calculate refund amount (full amount, fees are not refunded)
         uint256 refundAmount = receipt.amountUSDC;
         
-        // Transfer refund to buyer
+        // Transfer refund to sender
         require(
-            busdcToken.transfer(receipt.buyer, refundAmount),
+            busdcToken.transfer(receipt.sender, refundAmount),
             "PaymentRouter: Refund transfer failed"
         );
         
-        // Update receipt and vendor earnings
+        // Update receipt and earnings
         receipt.status = PaymentStatus.Refunded;
-        vendorEarnings[receipt.vendor] -= refundAmount;
         
-        emit PaymentRefunded(orderId, receipt.buyer, receipt.vendor, refundAmount);
+        if (receipt.isVendorPayment) {
+            vendorEarnings[receipt.recipient] -= refundAmount;
+        } else {
+            userEarnings[receipt.recipient] -= refundAmount;
+        }
+        
+        emit PaymentRefunded(orderId, receipt.sender, receipt.recipient, refundAmount);
     }
     
     /**
@@ -387,6 +424,15 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
     }
     
     /**
+     * @dev Get user's total P2P earnings
+     * @param user User address
+     * @return earnings Total P2P earnings in bUSDC
+     */
+    function getUserEarnings(address user) external view returns (uint256 earnings) {
+        return userEarnings[user];
+    }
+    
+    /**
      * @dev Calculate amount in USDC from GHS
      * @param amountGHS Amount in GHS
      * @return amountUSDC Amount in bUSDC
@@ -417,6 +463,21 @@ contract PaymentRouter is Ownable, Pausable, ReentrancyGuard {
     function _getVendorENS(address vendor) internal view returns (string memory ensName) {
         VendorRegistry.VendorProfile memory profile = vendorRegistry.getVendorProfile(vendor);
         return profile.ensName;
+    }
+    
+    /**
+     * @dev Get recipient's ENS name (vendor or user)
+     * @param recipient Recipient address
+     * @return ensName Recipient's ENS name
+     */
+    function _getRecipientENS(address recipient) internal view returns (string memory ensName) {
+        if (vendorRegistry.isVendor(recipient)) {
+            return _getVendorENS(recipient);
+        }
+        
+        // For regular users, try to get ENS from subname registrar
+        // This would be implemented when we have user ENS support
+        return "";
     }
     
     /**

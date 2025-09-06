@@ -3,9 +3,34 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { CheckIcon } from "@heroicons/react/20/solid";
+import { useUser } from '@clerk/nextjs';
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth/useScaffoldReadContract";
+import { useWalletUser } from "~~/hooks/useWalletUser";
 
 const BuyerHome = () => {
   const router = useRouter();
+  const { user, isLoaded } = useUser();
+  const { walletAddress } = useWalletUser();
+
+  // Get vendor's USDC balance from the smart contract using wallet address
+  const { data: usdcBalance } = useScaffoldReadContract({
+    contractName: "bUSDC",
+    functionName: "balanceOf",
+    args: [walletAddress || "0x0"],
+  });
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    router.push('/sign-in');
+    return null;
+  }
 
   const recentTransactions = [
     {
@@ -71,7 +96,10 @@ const BuyerHome = () => {
               <button className="backdrop-blur-2xl  bg-white/30  font-medium py-3 px-5 rounded-xl text-sm hover:bg-opacity-30">
                 Withdraw
               </button>
-              <button className="backdrop-blur-2xl  bg-white/30  font-medium py-3 px-5 rounded-xl text-sm hover:bg-opacity-30 transition-colors">
+              <button 
+                onClick={() => router.push("/menu-management")}
+                className="backdrop-blur-2xl  bg-white/30  font-medium py-3 px-5 rounded-xl text-sm hover:bg-opacity-30 transition-colors"
+              >
                 Menu Editor
               </button>
             </div>
@@ -200,8 +228,12 @@ const BuyerHome = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                     <div>
                       <h2 className="text-lg font-medium mb-4">Total Balance</h2>
-                      <div className="text-5xl font-bold mb-2">₵4,850.00</div>
-                      <p className="text-blue-100 text-lg">$297.50 USDC</p>
+                      <div className="text-5xl font-bold mb-2">
+                        ₵{usdcBalance ? (Number(usdcBalance) / 1e6 * 16.3).toFixed(2) : '0.00'}
+                      </div>
+                      <p className="text-blue-100 text-lg">
+                        {usdcBalance ? (Number(usdcBalance) / 1e6).toFixed(2) : '0.00'} USDC
+                      </p>
                     </div>
                     <div>
                       <h2 className="text-lg font-medium mb-4">Today's Sales</h2>
@@ -210,10 +242,16 @@ const BuyerHome = () => {
                     </div>
                   </div>
                   <div className="flex space-x-4">
-                    <button className="bg-white bg-opacity-20 text-white font-medium py-3 px-6 rounded-xl hover:bg-opacity-30 transition-colors">
-                      Withdraw
+                    <button 
+                      onClick={() => router.push("/vendor-dashboard")}
+                      className="bg-white bg-opacity-20 text-white font-medium py-3 px-6 rounded-xl hover:bg-opacity-30 transition-colors"
+                    >
+                      Dashboard
                     </button>
-                    <button className="bg-white bg-opacity-20 text-white font-medium py-3 px-6 rounded-xl hover:bg-opacity-30 transition-colors">
+                    <button 
+                      onClick={() => router.push("/menu-management")}
+                      className="bg-white bg-opacity-20 text-white font-medium py-3 px-6 rounded-xl hover:bg-opacity-30 transition-colors"
+                    >
                       Menu Editor
                     </button>
                   </div>

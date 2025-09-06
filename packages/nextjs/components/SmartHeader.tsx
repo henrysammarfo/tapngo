@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MoonIcon, SunIcon } from "./ThemeIcons";
 import { useTheme } from "next-themes";
+import { useUser, useClerk } from '@clerk/nextjs';
 
 /* eslint-disable @next/next/no-html-link-for-pages */
 
@@ -14,6 +15,9 @@ export default function SmartHeader() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
   const isHomePage = pathname === "/";
 
   useEffect(() => {
@@ -99,16 +103,39 @@ export default function SmartHeader() {
 
         {/* Auth Buttons */}
         <div className="flex items-center space-x-3">
-          <button
-            className={`px-5 py-2.5 rounded-full font-medium border-2 transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md ${authButtonStyles.login}`}
-          >
-            Login
-          </button>
-          <button
-            className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg ${authButtonStyles.signup}`}
-          >
-            Sign Up
-          </button>
+          {!isLoaded ? (
+            <div className="w-20 h-10 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+          ) : user ? (
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => router.push('/user-dashboard')}
+                className={`px-5 py-2.5 rounded-full font-medium border-2 transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md ${authButtonStyles.login}`}
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={() => signOut()}
+                className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg ${authButtonStyles.signup}`}
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <>
+              <a
+                href="/sign-in"
+                className={`px-5 py-2.5 rounded-full font-medium border-2 transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md ${authButtonStyles.login} inline-block text-center`}
+              >
+                Login
+              </a>
+              <a
+                href="/sign-up"
+                className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg ${authButtonStyles.signup} inline-block text-center`}
+              >
+                Sign Up
+              </a>
+            </>
+          )}
         </div>
       </div>
 
@@ -184,12 +211,45 @@ export default function SmartHeader() {
 
               <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex space-x-3 mb-6">
-                  <button className="flex-1 px-4 py-3 border-2 border-blue-500 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all duration-300 font-medium">
-                    Login
-                  </button>
-                  <button className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium">
-                    Sign Up
-                  </button>
+                  {!isLoaded ? (
+                    <div className="flex-1 h-12 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse"></div>
+                  ) : user ? (
+                    <>
+                      <a 
+                        href="/user-dashboard"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex-1 px-4 py-3 border-2 border-blue-500 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all duration-300 font-medium text-center"
+                      >
+                        Dashboard
+                      </a>
+                      <button 
+                        onClick={() => {
+                          signOut();
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-300 font-medium"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <a 
+                        href="/sign-in"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex-1 px-4 py-3 border-2 border-blue-500 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition-all duration-300 font-medium text-center"
+                      >
+                        Login
+                      </a>
+                      <a 
+                        href="/sign-up"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-medium text-center"
+                      >
+                        Sign Up
+                      </a>
+                    </>
+                  )}
                 </div>
 
                 <div className="flex justify-center">
