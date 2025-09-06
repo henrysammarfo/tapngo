@@ -1,0 +1,82 @@
+{
+  "network": "baseSepolia",
+  "chainId": 84532,
+  "deployer": "0xBab2d51d46042098690a9767339d7603C9F737C1",
+  "deploymentDate": "2025-09-06T03:54:00Z",
+  "contracts": {
+    "bUSDC": {
+      "address": "0xeb9361Ec0d712C5B12965FB91c409262b7d6703c",
+      "transactionHash": "0x37eac141450b979669316af99976193a46b016f8f9de382531a95485b995b8ac",
+      "blockNumber": 30637627,
+      "gasUsed": "961740",
+      "description": "Base USDC Test Token - ERC20 token for testing Tap&Go Pay",
+      "explorerUrl": "https://sepolia.basescan.org/address/0xeb9361Ec0d712C5B12965FB91c409262b7d6703c",
+      "transactionUrl": "https://sepolia.basescan.org/tx/0x37eac141450b979669316af99976193a46b016f8f9de382531a95485b995b8ac"
+    },
+    "PaymentRouter": {
+      "address": "0x0598c74C30e4e70fb6Cd7cd63c3DDE74756EAb73",
+      "description": "Handles bUSDC payments and emits Receipt events",
+      "explorerUrl": "https://sepolia.basescan.org/address/0x0598c74C30e4e70fb6Cd7cd63c3DDE74756EAb73"
+    },
+    "VendorRegistry": {
+      "address": "0xA9F04F020CF9F511982719196E25FE7c666c9E4D",
+      "description": "Vendor profile store with verification requirements",
+      "explorerUrl": "https://sepolia.basescan.org/address/0xA9F04F020CF9F511982719196E25FE7c666c9E4D"
+    },
+    "SubnameRegistrar": {
+      "address": "0x75c4D11F142bB29996B11533e6EF9f741c45De7C",
+      "description": "Issues .tapandgo.eth subnames for vendors",
+      "explorerUrl": "https://sepolia.basescan.org/address/0x75c4D11F142bB29996B11533e6EF9f741c45De7C"
+    },
+    "Paymaster": {
+      "address": "0x23E3d0017A282f48bF80dE2A6E670f57be2C9152",
+      "description": "Sponsors gas for verified users/vendors",
+      "explorerUrl": "https://sepolia.basescan.org/address/0x23E3d0017A282f48bF80dE2A6E670f57be2C9152",
+      "gasLimits": {
+        "maxGasPerTransaction": 500000,
+        "maxGasPerDay": 2000000,
+        "maxGasPerMonth": 50000000
+      }
+    }
+  },
+  "networkConfig": {
+    "name": "baseSepolia",
+    "chainId": 84532,
+    "rpcUrl": "https://sepolia.base.org",
+    "explorerUrl": "https://sepolia.basescan.org",
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    }
+  },
+  "deploymentArtifacts": {
+    "location": "packages/hardhat/deployments/baseSepolia/",
+    "files": [
+      "bUSDC.json",
+      "PaymentRouter.json", 
+      "VendorRegistry.json",
+      "SubnameRegistrar.json",
+      "Paymaster.json"
+    ]
+  },
+  "testTransactions": {
+    "faucetClaim": {
+      "contract": "bUSDC",
+      "function": "claimFaucet()",
+      "description": "Claim 1000 bUSDC tokens (24h cooldown)"
+    },
+    "processPayment": {
+      "contract": "PaymentRouter", 
+      "function": "processPayment()",
+      "description": "Process payments between users and vendors"
+    }
+  },
+  "verificationStatus": {
+    "bUSDC": "deployed",
+    "PaymentRouter": "deployed", 
+    "VendorRegistry": "deployed",
+    "SubnameRegistrar": "pending",
+    "Paymaster": "pending"
+  }
+}

@@ -44,14 +44,9 @@ const deployTapNGoContracts: DeployFunction = async function (hre: HardhatRuntim
   // 3. Deploy SubnameRegistrar
   console.log("3️⃣ Deploying SubnameRegistrar...");
 
-  // For Base Sepolia, we'll use placeholder addresses for ENS contracts
-  // In production, these would be the actual ENS contract addresses
-  const ENS_REGISTRY_PLACEHOLDER = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"; // Mainnet ENS Registry
-  const ENS_RESOLVER_PLACEHOLDER = "0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41"; // Mainnet Public Resolver
-
   await deploy("SubnameRegistrar", {
     from: deployer,
-    args: [await vendorRegistry.getAddress(), ENS_REGISTRY_PLACEHOLDER, ENS_RESOLVER_PLACEHOLDER],
+    args: [await vendorRegistry.getAddress()],
     log: true,
     autoMine: true,
   });
@@ -67,6 +62,7 @@ const deployTapNGoContracts: DeployFunction = async function (hre: HardhatRuntim
     args: [
       await busdc.getAddress(),
       await vendorRegistry.getAddress(),
+      await subnameRegistrar.getAddress(),
       deployer, // Fee recipient (deployer for now)
     ],
     log: true,
@@ -115,6 +111,7 @@ const deployTapNGoContracts: DeployFunction = async function (hre: HardhatRuntim
   console.log(`- VendorRegistry → SubnameRegistrar: ${await subnameRegistrar.vendorRegistry()}`);
   console.log(`- PaymentRouter → bUSDC: ${await paymentRouter.busdcToken()}`);
   console.log(`- PaymentRouter → VendorRegistry: ${await paymentRouter.vendorRegistry()}`);
+  console.log(`- PaymentRouter → SubnameRegistrar: ${await paymentRouter.subnameRegistrar()}`);
   console.log(`- Paymaster → VendorRegistry: ${await paymaster.vendorRegistry()}`);
   console.log("");
 

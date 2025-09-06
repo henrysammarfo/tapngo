@@ -1,7 +1,27 @@
-import React from "react";
-import BackArrow from "~~/components/BackArrow";
+"use client";
 
-const userOnBoarding = () => {
+import React from "react";
+import { useRouter } from "next/navigation";
+import BackArrow from "~~/components/BackArrow";
+import { useUser } from '@clerk/nextjs';
+
+const UserOnBoarding = () => {
+  const router = useRouter();
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    router.push('/sign-in');
+    return null;
+  }
+
   return (
     <>
       <BackArrow />
@@ -218,4 +238,4 @@ const userOnBoarding = () => {
   );
 };
 
-export default userOnBoarding;
+export default UserOnBoarding;
