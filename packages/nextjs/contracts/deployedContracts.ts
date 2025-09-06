@@ -5074,7 +5074,7 @@ const deployedContracts = {
       deployedOnBlock: 30637635,
     },
     PaymentRouter: {
-      address: "0x0598c74C30e4e70fb6Cd7cd63c3DDE74756EAb73",
+      address: "0xd4C84453E1640BDD8a9EB0Dd645c0C4208dD66eF",
       abi: [
         {
           inputs: [
@@ -5086,6 +5086,11 @@ const deployedContracts = {
             {
               internalType: "address",
               name: "_vendorRegistry",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_subnameRegistrar",
               type: "address",
             },
             {
@@ -5216,13 +5221,13 @@ const deployedContracts = {
             {
               indexed: true,
               internalType: "address",
-              name: "buyer",
+              name: "sender",
               type: "address",
             },
             {
               indexed: true,
               internalType: "address",
-              name: "vendor",
+              name: "recipient",
               type: "address",
             },
             {
@@ -5240,7 +5245,7 @@ const deployedContracts = {
             {
               indexed: false,
               internalType: "uint256",
-              name: "vendorAmount",
+              name: "recipientAmount",
               type: "uint256",
             },
           ],
@@ -5259,13 +5264,13 @@ const deployedContracts = {
             {
               indexed: true,
               internalType: "address",
-              name: "buyer",
+              name: "sender",
               type: "address",
             },
             {
               indexed: true,
               internalType: "address",
-              name: "vendor",
+              name: "recipient",
               type: "address",
             },
             {
@@ -5290,13 +5295,13 @@ const deployedContracts = {
             {
               indexed: true,
               internalType: "address",
-              name: "buyer",
+              name: "sender",
               type: "address",
             },
             {
               indexed: true,
               internalType: "address",
-              name: "vendor",
+              name: "recipient",
               type: "address",
             },
             {
@@ -5327,13 +5332,13 @@ const deployedContracts = {
             {
               indexed: true,
               internalType: "address",
-              name: "buyer",
+              name: "sender",
               type: "address",
             },
             {
               indexed: true,
               internalType: "address",
-              name: "vendor",
+              name: "recipient",
               type: "address",
             },
             {
@@ -5499,17 +5504,17 @@ const deployedContracts = {
                 },
                 {
                   internalType: "string",
-                  name: "vendorENS",
+                  name: "recipientENS",
                   type: "string",
                 },
                 {
                   internalType: "address",
-                  name: "buyer",
+                  name: "sender",
                   type: "address",
                 },
                 {
                   internalType: "address",
-                  name: "vendor",
+                  name: "recipient",
                   type: "address",
                 },
                 {
@@ -5547,10 +5552,34 @@ const deployedContracts = {
                   name: "metadata",
                   type: "string",
                 },
+                {
+                  internalType: "bool",
+                  name: "isVendorPayment",
+                  type: "bool",
+                },
               ],
               internalType: "struct PaymentRouter.Receipt",
               name: "receipt",
               type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+          ],
+          name: "getUserEarnings",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "earnings",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -5602,59 +5631,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "vendor",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "amountGHS",
-              type: "uint256",
-            },
-            {
-              internalType: "string",
-              name: "metadata",
-              type: "string",
-            },
-          ],
-          name: "initiateInvoicePay",
-          outputs: [
-            {
-              internalType: "bytes32",
-              name: "orderId",
-              type: "bytes32",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "vendor",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "amountGHS",
-              type: "uint256",
-            },
-          ],
-          name: "initiateQuickPay",
-          outputs: [
-            {
-              internalType: "bytes32",
-              name: "orderId",
-              type: "bytes32",
-            },
-          ],
-          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -5738,17 +5714,17 @@ const deployedContracts = {
             },
             {
               internalType: "string",
-              name: "vendorENS",
+              name: "recipientENS",
               type: "string",
             },
             {
               internalType: "address",
-              name: "buyer",
+              name: "sender",
               type: "address",
             },
             {
               internalType: "address",
-              name: "vendor",
+              name: "recipient",
               type: "address",
             },
             {
@@ -5786,6 +5762,11 @@ const deployedContracts = {
               name: "metadata",
               type: "string",
             },
+            {
+              internalType: "bool",
+              name: "isVendorPayment",
+              type: "bool",
+            },
           ],
           stateMutability: "view",
           type: "function",
@@ -5808,6 +5789,82 @@ const deployedContracts = {
           name: "renounceOwnership",
           outputs: [],
           stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "recipient",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "amountGHS",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "metadata",
+              type: "string",
+            },
+          ],
+          name: "sendP2PPayment",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "orderId",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "vendor",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "amountGHS",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "metadata",
+              type: "string",
+            },
+            {
+              internalType: "enum PaymentRouter.PaymentType",
+              name: "paymentType",
+              type: "uint8",
+            },
+          ],
+          name: "sendVendorPayment",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "orderId",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "subnameRegistrar",
+          outputs: [
+            {
+              internalType: "contract SubnameRegistrar",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -5889,6 +5946,25 @@ const deployedContracts = {
               name: "",
               type: "address",
             },
+          ],
+          name: "userEarnings",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
             {
               internalType: "uint256",
               name: "",
@@ -5945,26 +6021,16 @@ const deployedContracts = {
         transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 30637633,
+      deployedOnBlock: 30689126,
     },
     SubnameRegistrar: {
-      address: "0x75c4D11F142bB29996B11533e6EF9f741c45De7C",
+      address: "0xC3b022250C359c9A9793d018503c20495FcD1B4F",
       abi: [
         {
           inputs: [
             {
               internalType: "address",
               name: "_vendorRegistry",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "_ensRegistry",
-              type: "address",
-            },
-            {
-              internalType: "address",
-              name: "_ensResolver",
               type: "address",
             },
           ],
@@ -6144,12 +6210,25 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "TAPNGO_NODE",
+          name: "SEPOLIA_ENS_REGISTRY",
           outputs: [
             {
-              internalType: "bytes32",
+              internalType: "address",
               name: "",
-              type: "bytes32",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "SEPOLIA_PUBLIC_RESOLVER",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
             },
           ],
           stateMutability: "view",
@@ -6344,6 +6423,19 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "bytes32",
+              name: "_tapngoNode",
+              type: "bytes32",
+            },
+          ],
+          name: "setTapngoNode",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "string",
               name: "",
               type: "string",
@@ -6374,6 +6466,19 @@ const deployedContracts = {
               internalType: "address",
               name: "",
               type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "tapngoNode",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
             },
           ],
           stateMutability: "view",
@@ -6474,7 +6579,7 @@ const deployedContracts = {
         transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
         paused: "@openzeppelin/contracts/utils/Pausable.sol",
       },
-      deployedOnBlock: 30637631,
+      deployedOnBlock: 30689125,
     },
     VendorRegistry: {
       address: "0xA9F04F020CF9F511982719196E25FE7c666c9E4D",
