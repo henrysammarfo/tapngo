@@ -113,41 +113,40 @@ contract SubnameRegistrar is Ownable, Pausable {
         require(bytes(subname).length > 0, "SubnameRegistrar: Subname cannot be empty");
         require(!subnameExists[subname], "SubnameRegistrar: Subname already exists");
         require(msg.value >= registrationFee, "SubnameRegistrar: Insufficient registration fee");
-        require(tapngoNode != bytes32(0), "SubnameRegistrar: tapngo.eth node not set");
         
-        // Get vendor profile to verify ENS name matches
+        // Get vendor profile
         VendorRegistry.VendorProfile memory profile = vendorRegistry.getVendorProfile(msg.sender);
         require(bytes(profile.ensName).length > 0, "SubnameRegistrar: Vendor must have ENS name set");
         
-        // Verify the subname matches the vendor's ENS name
-        string memory expectedSubname = _extractSubname(profile.ensName);
-        require(
-            keccak256(bytes(subname)) == keccak256(bytes(expectedSubname)),
-            "SubnameRegistrar: Subname must match vendor's registered ENS name"
-        );
-        
-        // Register the subname
+        // Register the subname locally
         subnameToOwner[subname] = msg.sender;
         subnameExists[subname] = true;
         ownerToSubnames[msg.sender].push(subname);
         
-        // Register with real Sepolia ENS
-        bytes32 label = keccak256(bytes(subname));
-        ensRegistry.setSubnodeRecord(
-            tapngoNode,
-            label,
-            msg.sender,
-            address(ensResolver),
-            0 // TTL = 0 means use default
-        );
+        // Note: Real ENS integration would require the parent domain to be owned
+        // For now, we'll just register locally and emit the event
+        // In production, this would interact with the actual ENS registry
         
-        // Set the address resolution
-        bytes32 node = keccak256(abi.encodePacked(tapngoNode, label));
-        ensResolver.setAddr(node, msg.sender);
+        emit SubnameRegistered(subname, msg.sender, msg.sender, block.timestamp);
+    }
+
+    /**
+     * @dev Register a new ENS subname for any user (not just vendors)
+     * @param subname The subname to register (e.g., "alice" for alice.tapngo.eth)
+     */
+    function registerUserSubname(string memory subname) external payable whenNotPaused {
+        require(bytes(subname).length > 0, "SubnameRegistrar: Subname cannot be empty");
+        require(!subnameExists[subname], "SubnameRegistrar: Subname already exists");
+        require(msg.value >= registrationFee, "SubnameRegistrar: Insufficient registration fee");
         
-        // Set text records for additional metadata
-        ensResolver.setText(node, "description", profile.businessName);
-        ensResolver.setText(node, "url", string(abi.encodePacked("https://tapngo.eth/", subname)));
+        // Register the subname locally
+        subnameToOwner[subname] = msg.sender;
+        subnameExists[subname] = true;
+        ownerToSubnames[msg.sender].push(subname);
+        
+        // Note: Real ENS integration would require the parent domain to be owned
+        // For now, we'll just register locally and emit the event
+        // In production, this would interact with the actual ENS registry
         
         emit SubnameRegistered(subname, msg.sender, msg.sender, block.timestamp);
     }

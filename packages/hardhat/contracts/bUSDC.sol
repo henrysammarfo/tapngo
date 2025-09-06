@@ -15,7 +15,7 @@ contract bUSDC is ERC20, Ownable, Pausable {
     uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10**6; // 6 decimals like real USDC
     
     // Faucet limits
-    uint256 public constant FAUCET_AMOUNT = 1000 * 10**6; // 1000 tokens per faucet
+    uint256 public constant FAUCET_AMOUNT = 10 * 10**6; // 10 tokens per faucet
     uint256 public constant FAUCET_COOLDOWN = 24 hours; // 24 hour cooldown between faucet claims
     
     // Mapping to track last faucet claim time per address

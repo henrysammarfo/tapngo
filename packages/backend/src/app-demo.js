@@ -56,6 +56,15 @@ const demoData = {
   menus: new Map()
 };
 
+// Contract addresses on Base Sepolia
+const CONTRACTS = {
+  bUSDC: '0xeb9361Ec0d712C5B12965FB91c409262b7d6703c',
+  PaymentRouter: '0xd4C84453E1640BDD8a9EB0Dd645c0C4208dD66eF',
+  VendorRegistry: '0xA9F04F020CF9F511982719196E25FE7c666c9E4D',
+  SubnameRegistrar: '0xC3b022250C359c9A9793d018503c20495FcD1B4F',
+  Paymaster: '0x23E3d0017A282f48bF80dE2A6E670f57be2C9152'
+};
+
 // Auth routes
 app.post('/api/auth/register', (req, res) => {
   const { email, phone, name } = req.body;
@@ -272,6 +281,49 @@ app.put('/api/profile', (req, res) => {
   res.json({
     success: true,
     data: updatedUser
+  });
+});
+
+// Contract info endpoint
+app.get('/api/contracts', (req, res) => {
+  res.json({
+    success: true,
+    data: CONTRACTS
+  });
+});
+
+// Balance endpoint (simulated)
+app.get('/api/balance/:address', (req, res) => {
+  const { address } = req.params;
+  
+  // Simulate balance check
+  const balance = Math.random() * 1000; // Random balance for demo
+  
+  res.json({
+    success: true,
+    data: {
+      address,
+      balance: balance.toFixed(6),
+      currency: 'bUSDC',
+      decimals: 6
+    }
+  });
+});
+
+// ENS resolution endpoint
+app.post('/api/ens/resolve', (req, res) => {
+  const { name } = req.body;
+  
+  // Simulate ENS resolution
+  const mockAddress = '0x' + Math.random().toString(16).substr(2, 40);
+  
+  res.json({
+    success: true,
+    data: {
+      name,
+      address: mockAddress,
+      resolved: true
+    }
   });
 });
 

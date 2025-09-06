@@ -127,11 +127,11 @@ yarn start
 ## 🔧 **Smart Contracts**
 
 ### **Deployed on Base Sepolia**
-- **bUSDC**: `0x...` - Base USDC Test Token
-- **PaymentRouter**: `0x...` - Main payment processing
-- **VendorRegistry**: `0x...` - Vendor management
-- **SubnameRegistrar**: `0x...` - ENS subname registration
-- **Paymaster**: `0x...` - Gasless transaction support
+- **bUSDC**: `0xeb9361Ec0d712C5B12965FB91c409262b7d6703c` - Base USDC Test Token
+- **PaymentRouter**: `0xd4C84453E1640BDD8a9EB0Dd645c0C4208dD66eF` - Main payment processing
+- **VendorRegistry**: `0xA9F04F020CF9F511982719196E25FE7c666c9E4D` - Vendor management
+- **SubnameRegistrar**: `0xC3b022250C359c9A9793d018503c20495FcD1B4F` - ENS subname registration
+- **Paymaster**: `0x23E3d0017A282f48bF80dE2A6E670f57be2C9152` - Gasless transaction support
 
 ### **Key Features**
 - **Gasless Payments**: Users don't pay gas fees
